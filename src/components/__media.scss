@@ -1,0 +1,74 @@
+@media screen and (max-width: 800px) {
+  main{
+    font-size: 94%;
+  }
+
+  section#profile-section{
+    width: 100dvw;
+    flex-direction: column-reverse;
+
+    .profile-text {
+      align-self: flex-end;
+      gap: 1rem;
+      bottom: -3rem;
+      width: 100%;
+      max-width: 650px;
+      
+      h2, h1 {
+        margin-left: unset;
+        text-align: center;
+        justify-self: end;
+      }
+    }
+    
+    .profile-back{
+      align-self: flex-start;
+      margin-top: -5rem;
+      border-radius: 0 3rem;
+      height: 100%;
+      aspect-ratio: 1;
+      max-height: 600px;
+      border-bottom-left-radius: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+
+  main {
+    font-size: 87%;
+  }
+
+  section#profile-section {
+    .profile-text {
+      align-content: start;
+    }
+    
+    .available{
+      position: absolute;
+      top: -1.5rem;
+      left: 45%;
+      transform: translateX(-50%);
+    }
+
+    h2 {
+      font-size: 2rem;
+    }
+    
+    .coding-junky{
+      justify-self: flex-start !important;
+      margin-top: unset;
+    }
+  
+    .profile-back {
+      align-self: center;
+      margin-bottom: 2rem; 
+      border-radius: 3rem;
+      width: 90%;
+    }
+  }
+
+  section#education {
+    grid-template-columns: 1fr;
+  }
+}

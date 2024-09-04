@@ -1,0 +1,66 @@
+@font-face {
+  font-family: "FiraSans-Regular";
+  src: url(../../fonts/FiraSans-Regular.woff2);
+}
+@font-face {
+  font-family: "FiraSans-bold";
+  src: url(../../fonts/FiraSans-Bold.woff2);
+}
+@font-face {
+  font-family: "FiraSans-semi-bold";
+  src: url(../../fonts/FiraSans-SemiBold.woff2);
+}
+@font-face {
+  font-family: "FiraSans-extra-bold";
+  src: url(../../fonts/FiraSans-ExtraBold.woff2);
+}
+@font-face {
+  font-family: "FiraSans-thin";
+  src: url(../../fonts/FiraSans-Light.woff2);
+}
+@font-face {
+  font-family: "FiraSans-tiny";
+  src: url(../../fonts/FiraSans-Thin.woff2);
+}
+
+:where(svg) {
+  display: block;
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke-dasharray: 0;
+  cursor: pointer;
+}
+
+[data-close]:hover {
+  transform: scale(110%);
+}
+
+p {
+  font-size: 90%;
+}
+
+b {
+  font-family: "FiraSans-bold", Arial, Helvetica, sans-serif;
+}
+
+a {
+  cursor: pointer;
+}
+
+* {
+  box-sizing: border-box;
+  transition: all 200ms ease;
+  font-family: "FiraSans-Regular", Arial, Helvetica, sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+strong {
+  font-stretch: narrower;
+  font-optical-sizing: 20px;
+}
