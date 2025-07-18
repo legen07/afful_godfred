@@ -1,4 +1,6 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
+//@ts-ignore
+import icons from "../allSvgs.js";
 /////////////////////////////////////////////
 ////  ICONS MANIPULATIONS
 
@@ -7,24 +9,35 @@ interface Props {
 }
 
 const Svg = (icon: Props) => {
-  const AllIconsObject = useRef([]);
+  const AllIconsObject = useRef(icons);
+  let [pathTag, setPathTag] = useState([]);
 
-  !localStorage.icons &&
-    fetch(
-      "https://cdn.jsdelivr.net/npm/@tabler/icons@3.11.0/tabler-nodes-outline.json",
-      { priority: "high" }
-    )
-      .then((outJsonUrl) => outJsonUrl.json())
-      .then((outJsonUrl) =>
-        localStorage.setItem("icons", JSON.stringify(outJsonUrl))
-      );
-  AllIconsObject.current = JSON.parse(localStorage.getItem("icons") || "")[
-    icon.icon
-  ];
+	useEffect(() => {
 
-  const pathTag = AllIconsObject.current.map((each: any, i: number) => (
-    <path key={icon.icon + "-" + i} {...each[1]}></path>
-  ));
+  if (AllIconsObject.current[icon.icon]){
+	  setPathTag(AllIconsObject.current[icon.icon].map((each: any, i: number) => (
+	    <path key={icon.icon + "-" + i} {...each[1]}></path>
+	  )))
+
+  } else {
+  	(async () => {
+	    const res = await fetch(
+	      "https://cdn.jsdelivr.net/npm/@tabler/icons@3.34.0/tabler-nodes-outline.json"
+	      //{ priority: "high" }
+	    );
+	     
+	    
+	    const result = await res.json();
+			const iconPaths = await result[icon.icon]
+  
+     	fetch("http://localhost:4000/write-file", {
+     		method : "POST",
+     		body : JSON.stringify({ iconPaths : iconPaths, icon : icon.icon })
+     	})
+    })()
+  }}, [icon])
+  
+
 
   return (
     <>

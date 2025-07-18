@@ -252,6 +252,20 @@ const Experience = forwardRef<HTMLDivElement>((props, skillsRef) => {
               </a>
             </p>
           </div>
+          <div>
+          	<h3>Ugly and High Res</h3>
+          	<p>
+		This tool efficiently compresses images—including GIFs—and automatically generates three versions: a highly compressed "ugly" version (~20px wide), a mobile-optimized version, and a higher-quality desktop version.
+		<br/>
+		<br/>
+		In addition to batch processing, the tool also watches a source folder for new images in real-time and optimizes them as they appear. This automation makes it ideal for workflows where images are continuously added, such as content pipelines or design handoffs.
+
+							<br/>
+							<a href="https://gist.github.com/legen07/058a517a4a3cce370772e561505764ac">
+								<Svg icon="brand-github" /> &nbsp; Github Gist
+							</a>
+          	</p>
+          </div>
         </article>
       </section>
     </>
