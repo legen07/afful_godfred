@@ -1,0 +1,124 @@
+/* About — portrait left, bio right. */
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 380px) 1fr;
+  gap: 60px;
+  align-items: start;
+  margin-top: 40px;
+}
+
+.photoWrap {
+  position: sticky;
+  top: 120px;
+}
+
+.photo {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  background: #0a0a0a;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+
+.photoImg {
+  object-fit: cover;
+  object-position: center;
+}
+
+/* A quiet grounding gradient — the portrait sits deeper, not floating. */
+.photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 62%, rgba(0, 0, 0, 0.38) 100%);
+  pointer-events: none;
+}
+
+.name {
+  font-size: clamp(28px, 3.4vw, 34px);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.role {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 14.5px;
+  letter-spacing: -0.015em;
+}
+
+.bio {
+  margin-top: 22px;
+  color: #c9c9c9;
+  font-size: 15px;
+  line-height: 1.65;
+  letter-spacing: -0.012em;
+  max-width: 62ch;
+}
+
+.bio p + p {
+  margin-top: 14px;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.fact {
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 14px 15px;
+  background: rgba(255, 255, 255, 0.02);
+  transition:
+    border-color 0.35s ease,
+    transform 0.5s var(--ease-apple);
+}
+
+.fact:hover {
+  border-color: var(--border);
+  transform: translateY(-2px);
+}
+
+.factLabel {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 9px;
+}
+
+.factValue {
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: -0.015em;
+  color: #e8e8e8;
+  white-space: pre-line;
+}
+
+/* --- Responsive ---------------------------------------------------------------- */
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .photoWrap {
+    position: static;
+    max-width: 380px;
+  }
+}
+
+@media (max-width: 560px) {
+  .facts {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,144 @@
+/* Work grid — desktop frames with a floating phone. */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 60px;
+}
+
+.cardWrap {
+  min-width: 0;
+}
+
+.card {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.01));
+  padding: 14px;
+  will-change: transform;
+  transition:
+    transform 0.5s var(--ease-apple),
+    border-color 0.5s ease,
+    box-shadow 0.5s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: var(--border);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(186, 208, 255, 0.05);
+}
+
+/* Frame: 16/10 desktop shot, phone floating off the right edge. */
+.frame {
+  position: relative;
+}
+
+.frameClip {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  background: #0a0a0a;
+}
+
+.frameClip > img {
+  transition: transform 1.4s var(--ease-apple);
+}
+
+.card:hover .frameClip > img {
+  transform: scale(1.035);
+}
+
+.phone {
+  position: absolute;
+  top: 50%;
+  right: -16px;
+  transform: translateY(-50%);
+  width: 92px;
+  aspect-ratio: 9 / 19;
+  border-radius: 18px;
+  border: 4px solid #1c1c1c;
+  outline: 1px solid var(--border);
+  overflow: hidden;
+  background: #0a0a0a;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Meta row */
+.meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  padding: 18px 6px 0;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.url {
+  font-size: 12.5px;
+  color: var(--muted);
+  letter-spacing: -0.01em;
+  font-family: var(--font-mono);
+}
+
+.desc {
+  padding: 8px 6px 16px;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+}
+
+/* Visit pill — compact liquid-metal, arrow nudges on hover (1:1 feedback). */
+.visit {
+  align-self: flex-start;
+  margin: 0 6px 8px;
+  height: 34px;
+  padding: 0 14px;
+  font-size: 12.5px;
+  gap: 7px;
+}
+
+.visit svg {
+  transition: transform 0.3s var(--ease-apple);
+}
+
+.visit:hover svg {
+  transform: translate(2px, -2px);
+}
+
+/* --- Responsive ------------------------------------------------------------ */
+@media (min-width: 901px) {
+  /* The phone floats 16px past the card; keep the grid gap wide enough. */
+  .grid {
+    gap: 34px;
+  }
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 44px;
+  }
+
+  /* On phones the phone-frame overlay is noise — drop it. */
+  .phone {
+    display: none;
+  }
+}

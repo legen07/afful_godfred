@@ -1,0 +1,38 @@
+{
+  "name": "godfred-dev",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "bun": "^1.40.0"
+  },
+  "scripts": {
+    "dev": "bun run next dev",
+    "build": "bun run next build",
+    "start": "bun run next start",
+    "preview": "bun run next start",
+    "lint": "bun run biome check .",
+    "typecheck": "bun run biome check .",
+    "format": "bun run biome format --write .",
+    "edge-build": "bun run opennextjs-cloudflare build",
+    "wrangler-dev": "bun run wrangler dev dist/functions-worker",
+    "deploy": "bun run sync-secrets.js && bun run opennextjs-cloudflare build && bun run wrangler deploy dist/functions-worker",
+    "sync-secrets": "bun run sync-secrets.js"
+  },
+  "dependencies": {
+    "babel-plugin-react-compiler": "^1.0.0",
+    "next": "16.3.5",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.13",
+    "@opennextjs/cloudflare": "1.20.6",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.9.0",
+    "wrangler": "^4.0.0"
+  }
+}

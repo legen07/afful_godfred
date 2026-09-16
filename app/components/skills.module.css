@@ -1,0 +1,86 @@
+/* Skills — liquid-metal bars in four groups. */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 56px;
+}
+
+.group {
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 24px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.01));
+}
+
+.groupLabel {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #cfcfcf;
+  margin-bottom: 20px;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 104px 1fr 42px;
+  align-items: center;
+  gap: 14px;
+  padding: 7px 0;
+}
+
+.name {
+  font-size: 13.5px;
+  letter-spacing: -0.015em;
+  color: #e8e8e8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track {
+  position: relative;
+  display: block;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  transform-origin: left center;
+  transform: scaleX(var(--level, 100%));
+  background: linear-gradient(105deg, #2a2a2a 0%, #6a6a6a 55%, #b9b9b9 100%);
+  box-shadow: 0 0 12px rgba(200, 210, 230, 0.12);
+}
+
+.pct {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: -0.01em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Responsive -------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    margin-top: 40px;
+  }
+
+  .row {
+    grid-template-columns: 96px 1fr 40px;
+    gap: 10px;
+  }
+}
