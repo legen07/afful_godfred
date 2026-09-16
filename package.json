@@ -16,7 +16,7 @@
     "format": "bun run biome format --write .",
     "edge-build": "bun run opennextjs-cloudflare build",
     "wrangler-dev": "bun run wrangler dev",
-    "deploy": "bun run sync-secrets.js && bun run opennextjs-cloudflare build && bun run opennextjs-cloudflare deploy",
+    "deploy": "bun run sync-secrets.js && bun run wrangler deploy",
     "sync-secrets": "bun run sync-secrets.js"
   },
   "dependencies": {

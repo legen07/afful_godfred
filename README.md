@@ -120,13 +120,18 @@ prints the matching `wrangler secret put` commands for deployment.
 ```bash
 bun run edge-build          # next build + OpenNext Cloudflare bundle → .open-next/
 bun run wrangler-dev        # local preview of the production bundle (workerd)
-bun run deploy              # opennextjs-cloudflare deploy (requires CLOUDFLARE_API_TOKEN)
+bun run deploy              # sync-secrets + wrangler deploy (requires CLOUDFLARE_API_TOKEN)
 ```
 
 Deployment facts:
 
-- Worker name: `godfred-dev` (`wrangler.toml`).
+- Worker name: `godfred-dev` (`wrangler.jsonc`).
 - Compatibility: `nodejs_compat` + `global_fetch_strictly_public`.
+- Build is declared in `wrangler.jsonc` → `build`: package manager **bun**,
+  command `bun install && bun run edge-build`, output `.open-next/`
+  (`worker.js` → worker `main`, `assets/` → Workers Assets). `wrangler deploy`
+  (and `wrangler dev`) run that build automatically before bundling, so
+  `bun run deploy` is self-contained (no manual `edge-build` step needed).
 - **No R2 bucket needed** — OpenNext cache overrides are `dummy`
   (`open-next.config.ts`) because the site is fully static and `/api/site`
   is uncached.
