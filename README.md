@@ -36,7 +36,7 @@ static, so the data layers collapse:
 | --- | --- |
 | L1 UI components | `app/components/*` (header, hero, work, automations, skills, about, contact, footer, reveal, ui/*) |
 | L2 app routes | `app/(marketing)/page.tsx`, `app/layout.tsx`, `app/not-found.tsx`, `app/error.tsx` |
-| L3 repository | `repository/site.repository.ts` — typed content (work, automations, skills, person, contact) incl. imported image assets |
+| L3 repository | `repository/site.repository.ts` — typed content (work, automations, skills, person, contact) incl. image paths under `public/images` |
 | L4 services | `services/site.service.ts` — Zod 4 validation of the repository, exports the `site` model |
 | L5 edge security | Cloudflare **Custom Headers** on the Pages project (the old `proxy.ts` edge proxy was removed with the worker) |
 | L6–L9 API / DB / cache / infra | N/A — fully static. The only "database" is the repository; caching is the Pages CDN |
@@ -91,28 +91,32 @@ Next 16.3.5 ships several changes vs. the skill's documented API:
 
 - `output: 'export'` in `next.config.ts` → the production build is a plain
   static `out/` directory (no worker, no server, no `/_next/image` route).
-- **`next-export-optimize-images`** keeps full `next/image` quality on the
-  export: its webpack hook records every `<Image>`/`<Picture>` src at build
-  time, then its CLI runs sharp over all `deviceSizes + imageSizes` and
-  writes webp + resized originals into
-  `out/_next/static/chunks/images/`. Two consequences:
-  - `build` runs **`next build --webpack`** (the plugin only hooks the
-    webpack pipeline; `next dev` stays on Turbopack).
-  - images must be **imported as modules** (from `images/`, not `/public`
-    URL strings — public files never pass through the loader). The
-    repository imports them and exports `StaticImageData`; components use
-    the plugin's `Picture` wrapper (renders `<picture>` with webp
-    `<source>`s). `export-images.config.cjs` holds the plugin settings.
-  - `public/afful-godfred.jpg` is kept as a plain copy for the OG/social
-    `metadata.images` URL (that URL must be a stable public path).
+- **`next-image-export-optimizer`** keeps full `next/image` quality on the
+  export: its CLI (run as the second half of `bun run build`) scans
+  `public/images` after `next build` and re-encodes every image with sharp
+  at all `deviceSizes + imageSizes` (webp by default + a 10px blur
+  placeholder), writing each variant next to the public copy —
+  e.g. `/images/work/buuz-desktop.png` →
+  `/images/work/nextImageExportOptimizer/buuz-desktop-opt-1080.WEBP`.
+- Components use the package's **`<ExportedImage>`** (a `next/image`
+  wrapper with a custom loader pointing at those variants, automatic blur
+  placeholder, and fallback to the original file on error). The plugin
+  settings live in the `env` block of `next.config.ts`
+  (`nextImageExportOptimizer_*`).
+- No webpack requirement — the optimizer is a post-build step, so
+  **dev and prod builds both run on Turbopack** (the Next 16 default).
+- The OG/social `metadata.images` URL points at the plain public file
+  `/images/afful-godfred.jpg` (a stable, crawler-friendly path, served
+  unoptimized).
 
 ## Build quirk: CSS minifier + `backdrop-filter`
 
-The old Turbopack minifier **dropped the standard `backdrop-filter` when a
-`-webkit-backdrop-filter` twin was present**. The production build now runs
-webpack, whose minifier keeps the standard property (verified in the built
-CSS). Rule of thumb stands regardless: **write only the standard
-`backdrop-filter`** — do not add `-webkit-backdrop-filter` by hand.
+A known Turbopack CSS-minifier quirk **drops the standard `backdrop-filter`
+when a `-webkit-backdrop-filter` twin is present** (it keeps only the
+prefixed form, which current Chromium ignores). The production build runs
+Turbopack, so the rule of thumb matters here: **write only the standard
+`backdrop-filter`** (as this project does) — verified present in the
+minified production CSS. Do not add `-webkit-backdrop-filter` by hand.
 
 ## Development
 
@@ -122,7 +126,7 @@ CSS). Rule of thumb stands regardless: **write only the standard
 ```bash
 bun install          # deps (uses .npmrc registry)
 bun run dev          # Turbopack dev server → http://localhost:3000
-bun run build        # static export: next build --webpack + image optimization → out/
+bun run build        # static export: next build + image optimization → out/
 bun run preview      # build, then serve out/ locally (wrangler pages dev)
 bun run lint         # Biome (check)
 bun run typecheck    # tsc --noEmit
@@ -155,8 +159,8 @@ Notes:
   it directly). `bun.lock` is committed, so installs are reproducible.
 - `wrangler.jsonc` carries `pages_build_output_dir: "out"` (Pages CI BETA
   reads it) and the project `name` used by the local `wrangler pages` CLI.
-- `next build --webpack` is required by the image-optimization plugin (see
-  Static export section) — keep the `--webpack` flag.
+- The optimizer is a post-build step inside `bun run build` — the build
+  command needs no extra flags (Turbopack build, no `--webpack`).
 
 ### Security headers (formerly `proxy.ts`)
 
@@ -171,15 +175,17 @@ Set on the Pages project → **Settings → Custom Headers** (apply to `/*`):
 
 ## Verification performed
 
-- `bun run build` (static export): 0 errors. Routes: `/` (static),
-  `/_not-found` (static), `/icon.svg` (static).
-- Image pipeline: 9 `<picture>` blocks (1 portrait + 8 work shots), 150 webp
-  variants + resized originals in `out/_next/static/chunks/images/`;
-  webp ≈ 50% smaller than png at the same width (1080w: 126 KB → 63 KB);
-  all 221 local URLs in the exported HTML resolve to real files.
+- `bun run build` (static export, Turbopack): 0 errors. Routes: `/` (static),
+  `/_not-found` (static), `/icon.svg` (static). Optimizer: 9 images × 17
+  sizes = 153 webp variants in `out/images/…/nextImageExportOptimizer/`.
+- All 127 local URLs in the exported HTML resolve to real files, including
+  the 10px blur placeholders; webp ≈ 1/8 of the source png at 1080w
+  (buuz-desktop: 507 KB png → 63 KB webp).
 - `backdrop-filter` confirmed present in the minified production CSS
-  (webpack minifier).
+  (Turbopack minifier).
 - Served `out/` locally: `/` 200 (portrait + 4 work cards render from the
-  optimized sources), `/404.html` 200, `/afful-godfred.jpg` 200 (OG image),
-  webp 200 `image/webp`.
-- `biome check`: clean. `tsc --noEmit`: clean (validated by the build).
+  optimized sources), `/404.html` 200, `/images/afful-godfred.jpg` 200 (OG
+  image), optimized webp 200 `image/webp`, original png 200 (fallback path).
+- `next dev` (Turbopack): page 200; optimized images fall back to the
+  originals in dev by design (variants only exist after a build).
+- `biome check`: clean. `tsc --noEmit`: clean.

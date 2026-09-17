@@ -1,24 +1,24 @@
-// CJS package: `module.exports` is the function itself (no named exports at
-// runtime), so a default import is required.
-
 import { fileURLToPath } from 'node:url'
 import type { NextConfig } from 'next'
-import withExportImages from 'next-export-optimize-images'
 
-// Next.js 16 — fully static site (Cloudflare Pages).
+// Next.js 16 — fully static site (Cloudflare Pages / GitHub Pages).
 //
 // - `output: 'export'` → `next build` emits a self-contained static `out/`
-//   directory that Cloudflare Pages hosts (no worker, no server).
-// - `next-export-optimize-images` keeps full `next/image` quality on the
-//   static export: it optimizes images with sharp at build time (webp
-//   variants + originals into `out/_next/static/chunks/images/`). Its
-//   webpack config hook only runs on a webpack build, so `build` uses
-//   `next build --webpack` (Turbopack remains the dev bundler).
+//   directory that Pages hosts (no worker, no server).
+// - `next-image-export-optimizer` keeps full `next/image` quality on the
+//   static export: after `next build`, its CLI scans `public/images` and
+//   re-encodes every image with sharp at all configured sizes (webp by
+//   default + 10px blur placeholders) next to the public copy. The
+//   `ExportedImage` component (used instead of `next/image`) points at
+//   those files. No webpack requirement — builds run on Turbopack.
+// - `images.loader: 'custom'` + the size lists below feed the optimizer's
+//   srcset generation (the component supplies its own loader function).
+// - `transpilePackages` is required by the optimizer (CJS package).
 // - Turbopack is the default bundler in 16 (always on for `next dev`).
 // - React Compiler is stable in 16 and enabled via the top-level
 //   `reactCompiler` option. Requires `babel-plugin-react-compiler`.
 // - Security headers that used to live in `proxy.ts` are now set at the
-//   Cloudflare edge (Pages project → Settings → Custom Headers). See README.
+//   edge (Pages project → Settings → Custom Headers). See README.
 
 const config: NextConfig = {
   output: 'export',
@@ -28,6 +28,19 @@ const config: NextConfig = {
     // Anchor the project root (the home dir holds an unrelated bun.lock).
     root: fileURLToPath(new URL('.', import.meta.url)),
   },
+  images: {
+    loader: 'custom',
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+  },
+  transpilePackages: ['next-image-export-optimizer'],
+  env: {
+    nextImageExportOptimizer_imageFolderPath: 'public/images',
+    nextImageExportOptimizer_exportFolderPath: 'out',
+    nextImageExportOptimizer_quality: '82',
+    nextImageExportOptimizer_storePicturesInWEBP: 'true',
+    nextImageExportOptimizer_generateAndUseBlurImages: 'true',
+  },
 }
 
-export default withExportImages(config)
+export default config

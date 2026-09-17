@@ -48,14 +48,14 @@ export const metadata: Metadata = {
     title: 'Afful Godfred — Web Development & Automation',
     description:
       'Modern website builds and the automation pipelines (scrapers, bots, and AI) that run them.',
-    images: [{ url: '/afful-godfred.jpg', width: 640, height: 640, alt: site.person.name }],
+    images: [{ url: '/images/afful-godfred.jpg', width: 640, height: 640, alt: site.person.name }],
   },
   twitter: {
     card: 'summary',
     title: 'Afful Godfred — Web Development & Automation',
     description:
       'Modern website builds and the automation pipelines (scrapers, bots, and AI) that run them.',
-    images: ['/afful-godfred.jpg'],
+    images: ['/images/afful-godfred.jpg'],
   },
   icons: { icon: '/icon.svg' },
   robots: { index: true, follow: true },

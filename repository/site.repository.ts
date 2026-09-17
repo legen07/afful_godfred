@@ -4,274 +4,262 @@
 // the architecture do not apply. The repository is the typed content store the
 // service layer (Layer 4) reads and validates — same boundary, same rules.
 //
-// Images are imported as modules (not served from /public) so that
-// `next-export-optimize-images` can optimize them at build time — public-dir
-// URL strings never pass through the webpack loader.
-
-import type { StaticImageData } from "next/dist/shared/lib/image-external";
-import portrait from "@/images/afful-godfred.jpg";
-import buuzDesktop from "@/images/work/buuz-desktop.png";
-import buuzMobile from "@/images/work/buuz-mobile.png";
-import nibiesDesktop from "@/images/work/nibies-desktop.png";
-import nibiesMobile from "@/images/work/nibies-mobile.png";
-import nuejayDesktop from "@/images/work/nueljay-desktop.png";
-import nuejayMobile from "@/images/work/nueljay-mobile.png";
-import reneglowDesktop from "@/images/work/reneglow-desktop.png";
-import reneglowMobile from "@/images/work/reneglow-mobile.png";
+// Image paths point at `public/images/` — the folder
+// `next-image-export-optimizer` scans and optimizes at build time (its
+// `ExportedImage` component rewrites them to the optimized URLs).
 
 export interface WorkSite {
-  slug: string;
-  name: string;
-  url: string;
-  description: string;
-  desktop: StaticImageData;
-  mobile: StaticImageData;
+  slug: string
+  name: string
+  url: string
+  description: string
+  desktop: string
+  mobile: string
 }
 
 export interface AutomationProject {
-  slug: string;
-  name: string;
-  url: string;
-  description: string;
-  language: string | null;
-  topics: string[];
-  status: "public" | "private" | "wip";
+  slug: string
+  name: string
+  url: string
+  description: string
+  language: string | null
+  topics: string[]
+  status: 'public' | 'private' | 'wip'
 }
 
 export interface Skill {
-  name: string;
-  level: number;
+  name: string
+  level: number
 }
 
 export interface SkillGroup {
-  id: string;
-  label: string;
-  skills: Skill[];
+  id: string
+  label: string
+  skills: Skill[]
 }
 
 export interface Person {
-  name: string;
-  role: string;
-  bio: string[];
-  photo: StaticImageData;
-  facts: { label: string; value: string }[];
+  name: string
+  role: string
+  bio: string[]
+  photo: string
+  facts: { label: string; value: string }[]
 }
 
 export interface Contact {
-  email: string;
-  phoneDisplay: string;
-  phoneHref: string;
-  socials: { label: string; handle: string; href: string }[];
+  email: string
+  phoneDisplay: string
+  phoneHref: string
+  socials: { label: string; handle: string; href: string }[]
 }
 
 export const siteRepository = {
   getWork(): WorkSite[] {
     return [
       {
-        slug: "buuz",
-        name: "Buuz",
-        url: "https://buuz-a5z.pages.dev",
+        slug: 'buuz',
+        name: 'Buuz',
+        url: 'https://buuz-a5z.pages.dev',
         description:
-          "Liquor e-commerce for Ghana — wine, gin, whiskey and cognac. Telegram sign-in, cedi pricing, and cash-on-delivery across Accra and beyond.",
-        desktop: buuzDesktop,
-        mobile: buuzMobile,
+          'Liquor e-commerce for Ghana — wine, gin, whiskey and cognac. Telegram sign-in, cedi pricing, and cash-on-delivery across Accra and beyond.',
+        desktop: '/images/work/buuz-desktop.png',
+        mobile: '/images/work/buuz-mobile.png',
       },
       {
-        slug: "nibies",
-        name: "Nibies",
-        url: "https://everythingsome.pages.dev",
+        slug: 'nibies',
+        name: 'Nibies',
+        url: 'https://everythingsome.pages.dev',
         description:
-          "Product storefront with a full order flow — bulk purchases, delivery zones, and same-day dispatch in the major cities.",
-        desktop: nibiesDesktop,
-        mobile: nibiesMobile,
+          'Product storefront with a full order flow — bulk purchases, delivery zones, and same-day dispatch in the major cities.',
+        desktop: '/images/work/nibies-desktop.png',
+        mobile: '/images/work/nibies-mobile.png',
       },
       {
-        slug: "nueljay",
-        name: "NuelJay",
-        url: "https://nueljay.pages.dev",
+        slug: 'nueljay',
+        name: 'NuelJay',
+        url: 'https://nueljay.pages.dev',
         description:
-          "Photography portfolio for a creative studio — fashion, products, weddings and outdoor work, built for a fast, striking experience.",
-        desktop: nuejayDesktop,
-        mobile: nuejayMobile,
+          'Photography portfolio for a creative studio — fashion, products, weddings and outdoor work, built for a fast, striking experience.',
+        desktop: '/images/work/nueljay-desktop.png',
+        mobile: '/images/work/nueljay-mobile.png',
       },
       {
-        slug: "reneglow",
+        slug: 'reneglow',
         name: "Rene's Glow Luxe",
-        url: "https://reneglow.pages.dev",
+        url: 'https://reneglow.pages.dev',
         description:
-          "Beauty studio site for hair, nails and lashes in Taifa — services, hours, and a grand-opening offer.",
-        desktop: reneglowDesktop,
-        mobile: reneglowMobile,
+          'Beauty studio site for hair, nails and lashes in Taifa — services, hours, and a grand-opening offer.',
+        desktop: '/images/work/reneglow-desktop.png',
+        mobile: '/images/work/reneglow-mobile.png',
       },
-    ];
+    ]
   },
 
   getAutomations(): AutomationProject[] {
     return [
       {
-        slug: "3e3grams",
-        name: "3e3grams",
-        url: "https://github.com/legen07/3e3grams",
+        slug: '3e3grams',
+        name: '3e3grams',
+        url: 'https://github.com/legen07/3e3grams',
         description:
-          "Robust Telegram automation toolkit for scraping, analyzing and managing Telegram dialogs — with Reddit trend detection and MongoDB persistence. Powered by the Telegram Client API and Playwright.",
-        language: "JavaScript",
-        topics: ["telegram", "playwright", "mongodb", "ai"],
-        status: "public",
+          'Robust Telegram automation toolkit for scraping, analyzing and managing Telegram dialogs — with Reddit trend detection and MongoDB persistence. Powered by the Telegram Client API and Playwright.',
+        language: 'JavaScript',
+        topics: ['telegram', 'playwright', 'mongodb', 'ai'],
+        status: 'public',
       },
       {
-        slug: "sporty_bro",
-        name: "sporty_bro",
-        url: "https://github.com/legen07/sporty_bro",
+        slug: 'sporty_bro',
+        name: 'sporty_bro',
+        url: 'https://github.com/legen07/sporty_bro',
         description:
-          "Automated SportyBet odds scraper and analysis tool built on Playwright — an experiment that staked 110+ slips (9 games each) to prove betting is a waste of time and money.",
-        language: "JavaScript",
-        topics: ["playwright", "scraping", "analysis"],
-        status: "public",
+          'Automated SportyBet odds scraper and analysis tool built on Playwright — an experiment that staked 110+ slips (9 games each) to prove betting is a waste of time and money.',
+        language: 'JavaScript',
+        topics: ['playwright', 'scraping', 'analysis'],
+        status: 'public',
       },
       {
-        slug: "ancient_chat",
-        name: "ancient_chat",
-        url: "https://github.com/legen07/ancient_chat",
+        slug: 'ancient_chat',
+        name: 'ancient_chat',
+        url: 'https://github.com/legen07/ancient_chat',
         description:
-          "Cloudflare Workers-powered Telegram AI chat bot that delivers intelligent customer support with Google Gemini. Built for speed, deployed globally.",
-        language: "JavaScript",
-        topics: ["cloudflare-workers", "gemini", "bun"],
-        status: "public",
+          'Cloudflare Workers-powered Telegram AI chat bot that delivers intelligent customer support with Google Gemini. Built for speed, deployed globally.',
+        language: 'JavaScript',
+        topics: ['cloudflare-workers', 'gemini', 'bun'],
+        status: 'public',
       },
       {
-        slug: "tikyou",
-        name: "tikYou",
-        url: "https://github.com/legen07/tikYou",
+        slug: 'tikyou',
+        name: 'tikYou',
+        url: 'https://github.com/legen07/tikYou',
         description:
-          "CLI automation that downloads videos from TikTok and posts them to YouTube automatically.",
-        language: "JavaScript",
-        topics: ["playwright", "cli", "scraper"],
-        status: "public",
+          'CLI automation that downloads videos from TikTok and posts them to YouTube automatically.',
+        language: 'JavaScript',
+        topics: ['playwright', 'cli', 'scraper'],
+        status: 'public',
       },
       {
-        slug: "scraper-01",
-        name: "scraper_01",
-        url: "https://github.com/legen07/scraper_01",
+        slug: 'scraper-01',
+        name: 'scraper_01',
+        url: 'https://github.com/legen07/scraper_01',
         description:
-          "Early web-scraping experiment — one of the first crawlers I ever wrote. The repository is private.",
+          'Early web-scraping experiment — one of the first crawlers I ever wrote. The repository is private.',
         language: null,
-        topics: ["scraping", "crawling"],
-        status: "private",
+        topics: ['scraping', 'crawling'],
+        status: 'private',
       },
       {
-        slug: "fluffy-umbrella",
-        name: "fluffy-umbrella",
-        url: "https://github.com/legen07/fluffy-umbrella",
+        slug: 'fluffy-umbrella',
+        name: 'fluffy-umbrella',
+        url: 'https://github.com/legen07/fluffy-umbrella',
         description:
-          "Ongoing crawl of publicly listed phone numbers across Ghana — several strategies attempted, still under construction.",
+          'Ongoing crawl of publicly listed phone numbers across Ghana — several strategies attempted, still under construction.',
         language: null,
-        topics: ["crawling", "ghana"],
-        status: "wip",
+        topics: ['crawling', 'ghana'],
+        status: 'wip',
       },
-    ];
+    ]
   },
 
   getSkills(): SkillGroup[] {
     return [
       {
-        id: "frontend",
-        label: "Frontend",
+        id: 'frontend',
+        label: 'Frontend',
         skills: [
-          { name: "HTML", level: 95 },
-          { name: "CSS", level: 95 },
-          { name: "Sass", level: 95 },
-          { name: "JavaScript", level: 90 },
-          { name: "TypeScript", level: 80 },
-          { name: "React", level: 80 },
+          { name: 'HTML', level: 95 },
+          { name: 'CSS', level: 95 },
+          { name: 'Sass', level: 95 },
+          { name: 'JavaScript', level: 90 },
+          { name: 'TypeScript', level: 80 },
+          { name: 'React', level: 80 },
         ],
       },
       {
-        id: "backend",
-        label: "Backend & Data",
+        id: 'backend',
+        label: 'Backend & Data',
         skills: [
-          { name: "SQL", level: 95 },
-          { name: "MongoDB", level: 95 },
-          { name: "JSON", level: 95 },
-          { name: "Python", level: 80 },
-          { name: "Node.js", level: 80 },
+          { name: 'SQL', level: 95 },
+          { name: 'MongoDB', level: 95 },
+          { name: 'JSON', level: 95 },
+          { name: 'Python', level: 80 },
+          { name: 'Node.js', level: 80 },
         ],
       },
       {
-        id: "tools",
-        label: "Tools & CMS",
+        id: 'tools',
+        label: 'Tools & CMS',
         skills: [
-          { name: "Git", level: 95 },
-          { name: "WordPress", level: 85 },
-          { name: "XML", level: 85 },
-          { name: "Drupal", level: 80 },
-          { name: "PHP", level: 60 },
+          { name: 'Git', level: 95 },
+          { name: 'WordPress', level: 85 },
+          { name: 'XML', level: 85 },
+          { name: 'Drupal', level: 80 },
+          { name: 'PHP', level: 60 },
         ],
       },
       {
-        id: "design",
-        label: "Design",
+        id: 'design',
+        label: 'Design',
         skills: [
-          { name: "Photoshop", level: 80 },
-          { name: "Illustrator", level: 80 },
-          { name: "After Effects", level: 80 },
-          { name: "Premiere", level: 70 },
-          { name: "Adobe XD", level: 55 },
+          { name: 'Photoshop', level: 80 },
+          { name: 'Illustrator', level: 80 },
+          { name: 'After Effects', level: 80 },
+          { name: 'Premiere', level: 70 },
+          { name: 'Adobe XD', level: 55 },
         ],
       },
-    ];
+    ]
   },
 
   getPerson(): Person {
     return {
-      name: "Afful Godfred",
-      role: "Software Engineer — Web Development & Automation",
+      name: 'Afful Godfred',
+      role: 'Software Engineer — Web Development & Automation',
       bio: [
-        "Results-driven software engineer with a B.Tech in Computer Science from Accra Technical University (Class of 2024). I build websites for people and businesses, then automate the repetitive parts — scraping, messaging, social, and customer chat — and wire AI in where it earns its place.",
-        "I have created a lot of automations. Some are personal, some are for moments that matter, and some are still under construction.",
+        'Results-driven software engineer with a B.Tech in Computer Science from Accra Technical University (Class of 2024). I build websites for people and businesses, then automate the repetitive parts — scraping, messaging, social, and customer chat — and wire AI in where it earns its place.',
+        'I have created a lot of automations. Some are personal, some are for moments that matter, and some are still under construction.',
       ],
-      photo: portrait,
+      photo: '/images/afful-godfred.jpg',
       facts: [
         {
-          label: "Education",
-          value:
-            "B.Tech Computer Science — Accra Technical University, Class of 2024",
+          label: 'Education',
+          value: 'B.Tech Computer Science — Accra Technical University, Class of 2024',
         },
         {
-          label: "Languages",
-          value: "English · Fluent\nTwi · Native\nJapanese · N4",
+          label: 'Languages',
+          value: 'English · Fluent\nTwi · Native\nJapanese · N4',
         },
-        { label: "Location", value: "Nsawam, Ghana" },
+        { label: 'Location', value: 'Nsawam, Ghana' },
       ],
-    };
+    }
   },
 
   getContact(): Contact {
     return {
-      email: "gafful07@gmail.com",
-      phoneDisplay: "+233 59 386 1032",
-      phoneHref: "tel:+233593861032",
+      email: 'gafful07@gmail.com',
+      phoneDisplay: '+233 59 386 1032',
+      phoneHref: 'tel:+233593861032',
       socials: [
         {
-          label: "GitHub",
-          handle: "@legen07",
-          href: "https://github.com/legen07",
+          label: 'GitHub',
+          handle: '@legen07',
+          href: 'https://github.com/legen07',
         },
         {
-          label: "LinkedIn",
-          handle: "in/legen07",
-          href: "https://www.linkedin.com/in/legen07",
+          label: 'LinkedIn',
+          handle: 'in/legen07',
+          href: 'https://www.linkedin.com/in/legen07',
         },
         {
-          label: "Telegram",
-          handle: "@islegen07",
-          href: "https://t.me/islegen07",
+          label: 'Telegram',
+          handle: '@islegen07',
+          href: 'https://t.me/islegen07',
         },
         {
-          label: "Bluesky",
-          handle: "@legen07",
-          href: "https://legen07.bsky.social",
+          label: 'Bluesky',
+          handle: '@legen07',
+          href: 'https://legen07.bsky.social',
         },
       ],
-    };
+    }
   },
-};
+}
