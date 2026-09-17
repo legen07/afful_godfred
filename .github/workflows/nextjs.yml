@@ -1,0 +1,77 @@
+# Builds the static export (next build --webpack + next-export-optimize-images)
+# and deploys it to GitHub Pages.
+name: Deploy Next.js site to Pages
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# GITHUB_TOKEN permissions required by actions/deploy-pages (OIDC)
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One concurrent deployment; never cancel an in-progress production deploy.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        # No `static_site_generator: next` on purpose — that option
+        # auto-injects NEXT_BASE_PATH=/afful_godfred, which is only correct
+        # for a *project page* (https://legen07.github.io/afful_godfred/).
+        # This site deploys to a custom domain at the root (godfred.dev),
+        # so basePath must stay empty.
+        # Project page instead? Add:  with: { static_site_generator: next }
+        # and point NEXT_PUBLIC_APP_URL below at the github.io URL.
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          version: 1.4 # bun.lock is committed; matches the local toolchain
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22" # Next 16 requires >= 20.9
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build static export + optimize images
+        # bun run build == next build --webpack && next-export-optimize-images
+        # --webpack is required: the image plugin only hooks the webpack
+        # pipeline (README → "Static export + image optimization").
+        run: bun run build
+        env:
+          # Inlined at build time → metadataBase in app/layout.tsx.
+          NEXT_PUBLIC_APP_URL: https://godfred.dev
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
