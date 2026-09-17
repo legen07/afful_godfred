@@ -1,4 +1,7 @@
-import Image from 'next/image'
+// next-export-optimize-images Picture wrapper: same API as next/image,
+// renders <picture> with build-time-optimized webp <source>s + a fallback
+// img of the resized original. See export-images.config.cjs.
+import Picture from 'next-export-optimize-images/picture'
 import type { Person } from '@/repository/site.repository'
 import styles from './about.module.css'
 import { Reveal } from './reveal'
@@ -19,7 +22,7 @@ export function About({ person }: AboutProps) {
         <div className={styles.grid}>
           <Reveal className={styles.photoWrap}>
             <figure className={styles.photo}>
-              <Image
+              <Picture
                 src={person.photo}
                 alt={`Portrait of ${person.name}`}
                 width={640}

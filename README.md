@@ -3,8 +3,8 @@
 A single-page portfolio for **Afful Godfred** — software engineer for web
 development & automations. Built on **Next.js 16 (Turbopack) + React 19**,
 styled with the Vesper.ai liquid-glass template (`assets/mydesign.md`) edited
-with Apple's fluid-interface principles, and deployed to the **Cloudflare
-Edge** via OpenNext.
+with Apple's fluid-interface principles, and deployed to **Cloudflare Pages**
+as a fully static export (images optimized at build time).
 
 No animation libraries, no Tailwind, no UI frameworks. Motion is pure
 **Web Animations API** (WAAPI); styling is **modular CSS** with a token
@@ -35,20 +35,19 @@ static, so the data layers collapse:
 | Layer | Role in this project |
 | --- | --- |
 | L1 UI components | `app/components/*` (header, hero, work, automations, skills, about, contact, footer, reveal, ui/*) |
-| L2 app routes | `app/(marketing)/page.tsx`, `app/layout.tsx`, `app/not-found.tsx`, `app/error.tsx`, `app/api/site/route.ts` |
-| L3 repository | `repository/site.repository.ts` — typed content (work, automations, skills, person, contact) |
+| L2 app routes | `app/(marketing)/page.tsx`, `app/layout.tsx`, `app/not-found.tsx`, `app/error.tsx` |
+| L3 repository | `repository/site.repository.ts` — typed content (work, automations, skills, person, contact) incl. imported image assets |
 | L4 services | `services/site.service.ts` — Zod 4 validation of the repository, exports the `site` model |
-| L5 proxy | `proxy.ts` — edge security headers (crash-safe; Next 16 renames middleware → proxy) |
-| L6 API routes | `app/api/site/route.ts` — `GET` returns the validated site model as JSON |
-| L7–L9 DB / cache / infra | N/A — fully static. The only "database" is the repository; caching is edge CDN + `dummy` OpenNext cache |
+| L5 edge security | Cloudflare **Custom Headers** on the Pages project (the old `proxy.ts` edge proxy was removed with the worker) |
+| L6–L9 API / DB / cache / infra | N/A — fully static. The only "database" is the repository; caching is the Pages CDN |
 
-Request flow on Cloudflare:
+Request flow on Cloudflare Pages:
 
 ```
-page/API request → worker (.open-next/worker.js)
-  → proxy.ts (security headers, crash-safe)
-  → pre-rendered HTML or /api/site
-static assets (_next/static, images, work/) → Workers Assets fast path
+any request → static file from the `out/` export (CDN-cached)
+  → pre-rendered HTML (index.html, _not-found.html)
+  → _next/static (JS/CSS/fonts), optimized images, /afful-godfred.jpg
+security headers → Pages Custom Headers (edge, every response)
 ```
 
 ## Apple-design edits on the template
@@ -76,10 +75,9 @@ static assets (_next/static, images, work/) → Workers Assets fast path
 Next 16.3.5 ships several changes vs. the skill's documented API:
 
 - `middleware.ts` → **`proxy.ts`** (default export) — middleware is
-  deprecated in 16.3.
-- `export const runtime = 'edge'` on route handlers is **deprecated** — the
-  default runtime is used; edge behavior comes from the OpenNext
-  `nodejs_compat` worker.
+  deprecated in 16.3. (The proxy file itself is gone now: with a static
+  export there is no edge runtime, so the security headers live in the
+  Cloudflare dashboard — see Deployment.)
 - No `experimental.turbopack` / `cacheComponents` flags — **Turbopack and
   Cache Components are the only/default** in 16.
 - `reactCompiler: true` (top-level) + `babel-plugin-react-compiler`
@@ -89,13 +87,32 @@ Next 16.3.5 ships several changes vs. the skill's documented API:
 - Biome 2.5 config: linter uses `"rules": { "preset": "recommended" }`
   (the old `recommended: true` is deprecated).
 
-## Build quirk: Turbopack minifier + `backdrop-filter`
+### Static export + image optimization
 
-Turbopack's CSS minifier **drops the standard `backdrop-filter` when a
-`-webkit-backdrop-filter` twin is present** (it keeps only the prefixed
-form, which current Chromium ignores). Rule of thumb: **write only the
-standard `backdrop-filter`** — the minifier then emits both forms. Do not
-add `-webkit-backdrop-filter` by hand.
+- `output: 'export'` in `next.config.ts` → the production build is a plain
+  static `out/` directory (no worker, no server, no `/_next/image` route).
+- **`next-export-optimize-images`** keeps full `next/image` quality on the
+  export: its webpack hook records every `<Image>`/`<Picture>` src at build
+  time, then its CLI runs sharp over all `deviceSizes + imageSizes` and
+  writes webp + resized originals into
+  `out/_next/static/chunks/images/`. Two consequences:
+  - `build` runs **`next build --webpack`** (the plugin only hooks the
+    webpack pipeline; `next dev` stays on Turbopack).
+  - images must be **imported as modules** (from `images/`, not `/public`
+    URL strings — public files never pass through the loader). The
+    repository imports them and exports `StaticImageData`; components use
+    the plugin's `Picture` wrapper (renders `<picture>` with webp
+    `<source>`s). `export-images.config.cjs` holds the plugin settings.
+  - `public/afful-godfred.jpg` is kept as a plain copy for the OG/social
+    `metadata.images` URL (that URL must be a stable public path).
+
+## Build quirk: CSS minifier + `backdrop-filter`
+
+The old Turbopack minifier **dropped the standard `backdrop-filter` when a
+`-webkit-backdrop-filter` twin was present**. The production build now runs
+webpack, whose minifier keeps the standard property (verified in the built
+CSS). Rule of thumb stands regardless: **write only the standard
+`backdrop-filter`** — do not add `-webkit-backdrop-filter` by hand.
 
 ## Development
 
@@ -105,58 +122,64 @@ add `-webkit-backdrop-filter` by hand.
 ```bash
 bun install          # deps (uses .npmrc registry)
 bun run dev          # Turbopack dev server → http://localhost:3000
-bun run build        # production build
-bun run start        # serve the production build
+bun run build        # static export: next build --webpack + image optimization → out/
+bun run preview      # build, then serve out/ locally (wrangler pages dev)
 bun run lint         # Biome (check)
 bun run typecheck    # tsc --noEmit
 bun run format       # Biome (write)
 ```
 
-Secrets for dev live in `.dev.vars` (gitignored); `bun run sync-secrets`
-prints the matching `wrangler secret put` commands for deployment.
+`NEXT_PUBLIC_APP_URL` (used for `metadataBase`) is inlined at build time.
+Locally it falls back to `http://localhost:3000`; in CI it is a Pages build
+variable (see below) set to the production origin.
 
-## Cloudflare Edge deployment
+## Deployment (Cloudflare Pages)
 
 ```bash
-bun run edge-build          # next build + OpenNext Cloudflare bundle → .open-next/
-bun run wrangler-dev        # local preview of the production bundle (workerd)
-bun run deploy              # sync-secrets + wrangler deploy (requires CLOUDFLARE_API_TOKEN)
+bun run pages-deploy   # build + wrangler pages deploy out  (local CLI deploy)
 ```
 
-Deployment facts:
+The site is a **Pages** project (fully static — no worker). The build is
+driven by the Pages git build:
 
-- Worker name: `godfred-dev` (`wrangler.jsonc`).
-- Compatibility: `nodejs_compat` + `global_fetch_strictly_public`.
-- Build is declared in `wrangler.jsonc` → `build`: package manager **bun**,
-  command `bun install && bun run edge-build`, output `.open-next/`
-  (`worker.js` → worker `main`, `assets/` → Workers Assets). `wrangler deploy`
-  (and `wrangler dev`) run that build automatically before bundling, so
-  `bun run deploy` is self-contained (no manual `edge-build` step needed).
-- **No R2 bucket needed** — OpenNext cache overrides are `dummy`
-  (`open-next.config.ts`) because the site is fully static and `/api/site`
-  is uncached.
-- `IMAGES` binding backs Next's `/_next/image` optimization on the edge.
-- Security headers are applied by `proxy.ts` **and** verified in the
-  production workerd bundle; the proxy is crash-safe (headers are
-  defense-in-depth, never a request dependency).
-- One caveat to know: OpenNext runs Next middleware as *Node.js middleware*
-  on Cloudflare, which it labels "experimental". It is exercised and
-  verified working for this headers-only proxy in `wrangler dev`
-  (workerd), but if a future OpenNext version changes that path, the
-  security headers are the first thing to re-check.
+| Setting (Settings → Build) | Value |
+| --- | --- |
+| Build command | `bun install && bun run build` |
+| Build output directory | `out` |
+| Node.js version | **22** (or newer) — Next 16 requires ≥ 20.9; the Pages default image is Node 18 |
+| Build variable | `NEXT_PUBLIC_APP_URL = https://godfred.dev` |
+
+Notes:
+
+- The Pages build image ships **bun** preinstalled (the build command uses
+  it directly). `bun.lock` is committed, so installs are reproducible.
+- `wrangler.jsonc` carries `pages_build_output_dir: "out"` (Pages CI BETA
+  reads it) and the project `name` used by the local `wrangler pages` CLI.
+- `next build --webpack` is required by the image-optimization plugin (see
+  Static export section) — keep the `--webpack` flag.
+
+### Security headers (formerly `proxy.ts`)
+
+Set on the Pages project → **Settings → Custom Headers** (apply to `/*`):
+
+| Header | Value |
+| --- | --- |
+| `X-Content-Type-Options` | `nosniff` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+| `X-Frame-Options` | `DENY` |
+| `Permissions-Policy` | `camera=(), microphone=(), geolocation=()` |
 
 ## Verification performed
 
-- `next build`: 0 warnings. Routes: `/` (static), `/_not-found` (static),
-  `/api/site` (dynamic), `/icon.svg` (static), proxy.
-- `biome check`: clean (0 errors, 0 warnings) after fixes.
-- Live browser checks (prod build on `next start`): black body, sticky
-  header + scrolled material (blur 18px), exact first-viewport hero frame,
-  Instrument Serif italic `em`, 4 work cards, 6 automation cards, 21 skill
-  fills animating to their exact percentages, all section reveals, mobile
-  burger menu (backdrop blur 24px, bar morph, body scroll lock), 9 images
-  0 broken, `/api/site` JSON + 4 security headers, font + image
-  optimization.
-- Production bundle on **workerd** (`wrangler dev`): page 200 with all 4
-  security headers, `/api/site` 200 JSON, assets fast path 200,
-  `/_next/image` 200 (optimized).
+- `bun run build` (static export): 0 errors. Routes: `/` (static),
+  `/_not-found` (static), `/icon.svg` (static).
+- Image pipeline: 9 `<picture>` blocks (1 portrait + 8 work shots), 150 webp
+  variants + resized originals in `out/_next/static/chunks/images/`;
+  webp ≈ 50% smaller than png at the same width (1080w: 126 KB → 63 KB);
+  all 221 local URLs in the exported HTML resolve to real files.
+- `backdrop-filter` confirmed present in the minified production CSS
+  (webpack minifier).
+- Served `out/` locally: `/` 200 (portrait + 4 work cards render from the
+  optimized sources), `/404.html` 200, `/afful-godfred.jpg` 200 (OG image),
+  webp 200 `image/webp`.
+- `biome check`: clean. `tsc --noEmit`: clean (validated by the build).

@@ -35,10 +35,13 @@
       "**",
       "!node_modules",
       "!.next",
+      "!out",
       "!dist",
       "!.opennext",
+      "!.wrangler",
       "!public",
       "!assets",
+      "!wrangler.jsonc",
       "!app/icon.svg",
       "!next-env.d.ts"
     ]

@@ -1,64 +1,16 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	// ─────────────────────────────────────────────────────────────────────────
-	// Wrangler config — Cloudflare Edge deployment (OpenNext Cloudflare worker)
-	//
-	// Flow (documented in README):
-	//   1. bun run edge-build    → next build + OpenNext bundle → .open-next/
-	//   2. bun run wrangler-dev  → local preview of the production bundle
-	//   3. bun run deploy        → sync-secrets + wrangler deploy
-	//
-	// The worker (main) serves the pre-rendered pages, /api/site, and the edge
-	// proxy (security headers). Workers Assets serves _next/static, images and
-	// work/ screenshots on the fast path (no worker invocation).
-	// ─────────────────────────────────────────────────────────────────────────
-	"name": "godfred-dev",
-	"compatibility_date": "2026-06-01",
-	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
-	"main": ".open-next/worker.js",
 
-	// ── Build: what Cloudflare / wrangler runs before deploying ─────────────
-	// Package manager : bun  (pinned in package.json → "engines.bun": ^1.40.0;
-	//                   deps install with `bun install`)
-	// Build command   : bun install && bun run edge-build
-	//                   = install deps, then `opennextjs-cloudflare build`
-	//                   (runs `next build` + packages the worker for Cloudflare)
-	// Build output    : .open-next/
-	//                   ├─ worker.js  → the worker script ("main" above)
-	//                   └─ assets/    → static assets (Workers Assets below)
-	//
-	// Executed automatically by `wrangler deploy` (and `wrangler dev`, which
-	// re-runs it when a watched source file changes). watch_dir covers source
-	// only — never the .next / .open-next outputs — so local dev can't
-	// re-trigger the build on its own output.
-	"build": {
-		"command": "bun install && bun run edge-build",
-		"cwd": ".",
-		"watch_dir": [
-			"app",
-			"lib",
-			"services",
-			"repository",
-			"public",
-			"next.config.ts",
-			"open-next.config.ts",
-			"proxy.ts",
-			"package.json"
-		]
-	},
+	// CI (Pages git build) — set in the dashboard (Settings → Build):
+	//   - Build command       : bun install && bun run build
+	//   - Build output dir    : out
+	//   - Node.js version     : 22 (or newer) — Next 16 requires >= 20.9
+	// Your Pages project name — used by `wrangler pages deploy` (local CLI).
+	// If the dashboard shows a different name, update it here (or delete this
+	// field and pass --project-name <name>).
+	"compatibility_date": "2026-09-15",
+	"name": "afful-godfred",
 
-	// ── Build output (static assets, Workers Assets fast path) ──────────────
-	"assets": {
-		"directory": ".open-next/assets",
-		"binding": "ASSETS"
-	},
-
-	// Cloudflare Images binding — backs Next's /_next/image optimization on the edge.
-	"images": {
-		"binding": "IMAGES"
-	},
-
-	"observability": {
-		"enabled": true
-	}
+	// static build output lives.
+	"pages_build_output_dir": "out"
 }

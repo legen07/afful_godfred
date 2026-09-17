@@ -8,30 +8,25 @@
   },
   "scripts": {
     "dev": "bun run next dev",
-    "build": "bun run next build",
-    "start": "bun run next start",
-    "preview": "bun run next start",
+    "build": "bun run next build --webpack && bun run next-export-optimize-images",
+    "preview": "bun run build && bun run wrangler pages dev out",
     "lint": "bun run biome check .",
     "typecheck": "bun run tsc --noEmit",
-    "format": "bun run biome format --write .",
-    "edge-build": "bun run opennextjs-cloudflare build",
-    "wrangler-dev": "bun run wrangler dev",
-    "deploy": "bun run sync-secrets.js && bun run wrangler deploy",
-    "sync-secrets": "bun run sync-secrets.js"
+    "format": "bun run biome format --write ."
   },
   "dependencies": {
     "babel-plugin-react-compiler": "^1.0.0",
     "next": "16.3.5",
     "react": "19.3.0",
+    "next-export-optimize-images": "^4.7.0",
     "react-dom": "19.3.0",
     "zod": "^4.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.13",
-    "@opennextjs/cloudflare": "1.20.6",
     "@types/node": "^24.0.0",
-    "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@types/react": "^19.0.0",
     "typescript": "^5.9.0",
     "wrangler": "^4.0.0"
   }

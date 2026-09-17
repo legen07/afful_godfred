@@ -1,4 +1,7 @@
-import Image from 'next/image'
+// next-export-optimize-images Picture wrapper: same API as next/image,
+// renders <picture> with build-time-optimized webp <source>s + a fallback
+// img of the resized original. See export-images.config.cjs.
+import Picture from 'next-export-optimize-images/picture'
 import type { WorkSite } from '@/repository/site.repository'
 import { Reveal } from './reveal'
 import styles from './work.module.css'
@@ -34,7 +37,7 @@ export function Work({ sites }: WorkProps) {
               <article className={styles.card}>
                 <div className={styles.frame}>
                   <div className={styles.frameClip}>
-                    <Image
+                    <Picture
                       src={site.desktop}
                       alt={`${site.name} — desktop view`}
                       fill
@@ -44,7 +47,7 @@ export function Work({ sites }: WorkProps) {
                     />
                   </div>
                   <div className={styles.phone}>
-                    <Image
+                    <Picture
                       src={site.mobile}
                       alt={`${site.name} — mobile view`}
                       fill

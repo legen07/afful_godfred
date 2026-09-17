@@ -1,22 +1,27 @@
+// CJS package: `module.exports` is the function itself (no named exports at
+// runtime), so a default import is required.
+
 import { fileURLToPath } from 'node:url'
 import type { NextConfig } from 'next'
+import withExportImages from 'next-export-optimize-images'
 
-// Next.js 16 — production-grade, static-first, Cloudflare Edge.
+// Next.js 16 — fully static site (Cloudflare Pages).
 //
-// Notes on the nextjs-16-edge skill's config, adapted to real Next.js 16.3:
-// - Turbopack is the only bundler in 16 and is always on for `next dev` and
-//   `next build` — the old `experimental.turbopack` flag no longer exists.
+// - `output: 'export'` → `next build` emits a self-contained static `out/`
+//   directory that Cloudflare Pages hosts (no worker, no server).
+// - `next-export-optimize-images` keeps full `next/image` quality on the
+//   static export: it optimizes images with sharp at build time (webp
+//   variants + originals into `out/_next/static/chunks/images/`). Its
+//   webpack config hook only runs on a webpack build, so `build` uses
+//   `next build --webpack` (Turbopack remains the dev bundler).
+// - Turbopack is the default bundler in 16 (always on for `next dev`).
 // - React Compiler is stable in 16 and enabled via the top-level
-//   `reactCompiler` option (it lived in `experimental` in 15.x). Requires
-//   `babel-plugin-react-compiler` in node_modules.
-// - Cache Components (`'use cache'` + `cacheLife`/`cacheTag`) is stable and on
-//   by default in 16 — no flag required.
-// - Edge runtime: `proxy.ts` (the 16.3 rename of `middleware.ts`) always runs
-//   on the Edge. For route handlers, 16.3 deprecates `runtime = 'edge'`; the
-//   default (nodejs) runtime is what OpenNext Cloudflare ships to the Edge
-//   under `nodejs_compat`, so `/api/site` uses the default runtime.
+//   `reactCompiler` option. Requires `babel-plugin-react-compiler`.
+// - Security headers that used to live in `proxy.ts` are now set at the
+//   Cloudflare edge (Pages project → Settings → Custom Headers). See README.
 
 const config: NextConfig = {
+  output: 'export',
   reactCompiler: true,
   poweredByHeader: false,
   turbopack: {
@@ -25,4 +30,4 @@ const config: NextConfig = {
   },
 }
 
-export default config
+export default withExportImages(config)

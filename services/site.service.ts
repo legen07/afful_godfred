@@ -12,13 +12,21 @@ import type {
 } from '@/repository/site.repository'
 import { siteRepository } from '@/repository/site.repository'
 
+// Imported images arrive as StaticImageData objects ({ src, width, height,
+// blur* }) — validate the required members; optional blur fields are stripped.
+const StaticImageSchema = z.object({
+  src: z.string().min(1),
+  width: z.number().int().positive(),
+  height: z.number().int().positive(),
+})
+
 const WorkSiteSchema = z.object({
   slug: z.string().min(1),
   name: z.string().min(1),
   url: z.string().url(),
   description: z.string().min(1),
-  desktop: z.string(),
-  mobile: z.string(),
+  desktop: StaticImageSchema,
+  mobile: StaticImageSchema,
 })
 
 const AutomationProjectSchema = z.object({
@@ -46,7 +54,7 @@ const PersonSchema = z.object({
   name: z.string().min(1),
   role: z.string().min(1),
   bio: z.array(z.string()).min(1),
-  photo: z.string(),
+  photo: StaticImageSchema,
   facts: z.array(z.object({ label: z.string(), value: z.string() })),
 })
 
