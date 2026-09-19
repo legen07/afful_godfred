@@ -16,11 +16,21 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--border-soft);
-  border-radius: 14px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.02) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
   padding: 14px;
   will-change: transform;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 8px 24px rgba(0, 0, 0, 0.35);
   transition:
     transform 0.5s var(--ease-apple),
     border-color 0.5s ease,
@@ -29,10 +39,11 @@
 
 .card:hover {
   transform: translateY(-5px);
-  border-color: var(--border);
+  border-color: rgba(255, 255, 255, 0.2);
   box-shadow:
     0 24px 60px rgba(0, 0, 0, 0.5),
-    0 0 40px rgba(186, 208, 255, 0.05);
+    0 0 40px rgba(186, 208, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
 
 /* Frame: 16/10 desktop shot, phone floating off the right edge. */
@@ -43,10 +54,12 @@
 .frameClip {
   position: relative;
   aspect-ratio: 16 / 10;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
-  border: 1px solid var(--border-soft);
-  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
 }
 
 .frameClip > img {
@@ -65,11 +78,14 @@
   width: 92px;
   aspect-ratio: 9 / 19;
   border-radius: 18px;
-  border: 4px solid #1c1c1c;
-  outline: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   overflow: hidden;
-  background: #0a0a0a;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 /* Meta row */

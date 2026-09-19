@@ -1,0 +1,323 @@
+/* CV page — document / letter paper */
+
+:global(.page) {
+  background: #f5f3ed;
+  color: #1a1a1a;
+}
+
+/* Paper envelope: centered sheet with soft shadow */
+.heroFrame {
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 1.5rem 4rem;
+  background: transparent;
+}
+
+.paper {
+  background: #fffef9;
+  border: 1px solid #d9d4c8;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  padding: 3.5rem 3rem 3rem;
+  max-width: 44rem;
+  width: 100%;
+}
+
+.badge {
+  display: inline-block;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.3em 0.9em;
+  border: 1.5px solid #1a1a1a;
+  color: #1a1a1a;
+  margin-bottom: 1.5rem;
+  background: transparent;
+}
+
+.h1 {
+  font-family: var(--font-instrument-serif), serif;
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  line-height: 1.05;
+  font-weight: 400;
+  font-style: italic;
+  margin: 0 0 1rem;
+  color: #111;
+}
+
+.h1 em {
+  font-style: italic;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  text-decoration-thickness: 0.06em;
+}
+
+.lede {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #333;
+  max-width: 32rem;
+  margin: 0 auto 2rem;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Section ruled like a document */
+.section {
+  background: transparent;
+  color: #1a1a1a;
+  padding: 0;
+  border-bottom: none;
+}
+
+.section-inner {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+}
+
+.section-title {
+  font-family: var(--font-instrument-serif), serif;
+  font-size: 1.35rem;
+  font-style: italic;
+  margin: 2.5rem 0 0.75rem;
+  color: #111;
+  border-bottom: 1px solid #d9d4c8;
+  padding-bottom: 0.35rem;
+}
+
+.name {
+  font-family: var(--font-instrument-serif), serif;
+  font-size: 1.75rem;
+  font-style: italic;
+  margin: 0 0 0.2rem;
+}
+
+.role {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #555;
+  margin: 0 0 1.25rem;
+}
+
+.bio {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #222;
+  margin: 0 0 1.25rem;
+}
+
+.bio p + p {
+  margin-top: 0.6rem;
+}
+
+/* Facts — key/value like a resume */
+.facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.4rem 1.5rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.88rem;
+}
+
+.fact {
+  display: contents;
+}
+
+.factLabel {
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.factValue {
+  color: #1a1a1a;
+  white-space: pre-line;
+}
+
+/* Bio + contact stacked on paper */
+.bioGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Contact card — like a vCard on paper */
+.contactCard {
+  border: 1px solid #d9d4c8;
+  border-left: none;
+  border-right: none;
+  padding: 1rem 0;
+  margin: 1.25rem 0;
+  background: transparent;
+}
+
+.contactHeading {
+  font-family: var(--font-instrument-serif), serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  margin: 0 0 0.6rem;
+  color: #333;
+}
+
+.contactRow {
+  display: block;
+  font-size: 0.85rem;
+  color: #1a1a1a;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+  margin-bottom: 0.35rem;
+  word-break: break-all;
+}
+
+.contactRow:hover {
+  color: #444;
+}
+
+.socials {
+  list-style: none;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.socials a {
+  color: #1a1a1a;
+  text-decoration: underline;
+  text-underline-offset: 0.1em;
+}
+
+/* Skills */
+.skills {
+  margin-top: 0;
+}
+
+.skillGroup {
+  margin-bottom: 1rem;
+}
+
+.skillLabel {
+  font-family: var(--font-instrument-serif), serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  margin: 0 0 0.4rem;
+  color: #1a1a1a;
+}
+
+.skillList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.3rem;
+}
+
+.skillItem {
+  display: grid;
+  grid-template-columns: 6rem 1fr 3rem;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.8rem;
+}
+
+.skillBar {
+  height: 2px;
+  background: #d9d4c8;
+  overflow: hidden;
+}
+
+.skillBarFill {
+  display: block;
+  height: 100%;
+  background: #1a1a1a;
+}
+
+.skillPct {
+  font-size: 0.7rem;
+  color: #888;
+  text-align: right;
+}
+
+/* Work lists */
+.work {
+  margin-top: 0;
+}
+
+.workList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.workList a {
+  color: #1a1a1a;
+  text-decoration: underline;
+  text-underline-offset: 0.1em;
+}
+
+.workList a:hover {
+  color: #444;
+}
+
+.lang {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.statusTag {
+  color: #888;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+/* Back to home */
+.backHome {
+  padding: 2rem 1.5rem 4rem;
+  background: transparent;
+  text-align: center;
+}
+
+/* Print: clean page breaks */
+@media print {
+  .paper {
+    box-shadow: none;
+    border: none;
+    padding: 0;
+  }
+  .section-inner {
+    max-width: 100%;
+    padding: 0;
+  }
+  .paper a {
+    color: #1a1a1a;
+    text-decoration: underline;
+  }
+  .btn {
+    display: none;
+  }
+}

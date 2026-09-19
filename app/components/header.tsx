@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import styles from './header.module.css'
-import { LogoMark, LogoWordmark } from './ui/logo'
+import { useEffect, useState } from "react";
+import styles from "./header.module.css";
+import { LogoMark, LogoWordmark } from "./ui/logo";
 
 interface HeaderProps {
-  nav: { label: string; href: string }[]
-  cta: { label: string; href: string }
+  nav: { label: string; href: string }[];
+  cta: { label: string; href: string };
 }
 
-const DESKTOP_QUERY = '(min-width: 901px)'
+const DESKTOP_QUERY = "(min-width: 901px)";
 
 /**
  * Sticky header — the template's 3-column grid, kept exactly:
@@ -24,60 +24,60 @@ const DESKTOP_QUERY = '(min-width: 901px)'
  *   all close it (template JS items 3–5).
  */
 export function Header({ nav, cta }: HeaderProps) {
-  const [open, setOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   // Scroll state — rAF-throttled (no work on the input path). The header goes
   // "scrolled" once the first frame has mostly passed (Apple: scroll edge
   // effects, not a hard divider).
   useEffect(() => {
-    let ticking = false
+    let ticking = false;
     const update = () => {
-      ticking = false
-      setScrolled(window.scrollY > window.innerHeight * 0.6)
-    }
+      ticking = false;
+      setScrolled(window.scrollY > window.innerHeight * 0.6);
+    };
     const onScroll = () => {
       if (!ticking) {
-        ticking = true
-        requestAnimationFrame(update)
+        ticking = true;
+        requestAnimationFrame(update);
       }
-    }
-    update()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Menu side effects: body lock, Escape, resize-to-desktop closes.
   useEffect(() => {
-    if (!open) return
-    document.body.classList.add('menu-open')
-    document.body.style.overflow = 'hidden'
+    if (!open) return;
+    document.body.classList.add("menu-open");
+    document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false)
-    }
+      if (e.key === "Escape") setOpen(false);
+    };
     const onResize = () => {
-      if (window.matchMedia(DESKTOP_QUERY).matches) setOpen(false)
-    }
-    window.addEventListener('keydown', onKey)
-    window.addEventListener('resize', onResize)
+      if (window.matchMedia(DESKTOP_QUERY).matches) setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
     return () => {
-      document.body.classList.remove('menu-open')
-      document.body.style.overflow = ''
-      window.removeEventListener('keydown', onKey)
-      window.removeEventListener('resize', onResize)
-    }
-  }, [open])
+      document.body.classList.remove("menu-open");
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [open]);
 
   return (
     <>
       {/* Full-screen menu backdrop (template): dims + blurs 24px when open.
           `menu-backdrop` is a global hook for the reduced-transparency rule. */}
       <div className={`menu-backdrop ${styles.backdrop}`} aria-hidden />
-      <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
+      <header className={`${styles.header} ${scrolled ? styles.scrolled : ""}`}>
         <a
           href="#top"
           className={`logo appear appear--scale ${styles.logo}`}
-          style={{ ['--d' as string]: '0.08s' }}
+          style={{ ["--d" as string]: "0.08s" }}
           aria-label="Godfred.dev — back to top"
         >
           <LogoMark />
@@ -85,25 +85,31 @@ export function Header({ nav, cta }: HeaderProps) {
         </a>
 
         <nav id="site-nav" className={styles.nav} aria-label="Primary">
-          {nav.map((item, i) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className={`pill appear ${
-                i % 2 === 0 ? 'appear--scale' : 'appear--soft'
-              } ${styles.navPill}`}
-              style={{ ['--d' as string]: `${0.16 + i * 0.12}s` }}
-              onClick={() => setOpen(false)}
-            >
-              {item.label}
-            </a>
-          ))}
+          {nav.map((item, i) => {
+            const isCv = item.label.toLowerCase() === "cv" ? true : false;
+            return (
+              <a
+                key={item.href}
+                href={item.href}
+                className={`pill appear ${
+                  i % 2 === 0 ? "appear--scale" : "appear--soft"
+                } ${styles.navPill}`}
+                style={{
+                  ["--d" as string]: `${0.16 + i * 0.12}s, `,
+                  ...(isCv && { backgroundColor: "white", color: "black" }),
+                }}
+                onClick={() => setOpen(false)}
+              >
+                {item.label}
+              </a>
+            );
+          })}
         </nav>
 
         <a
           href={cta.href}
           className={`btn btn-solid appear appear--scale ${styles.headerCta}`}
-          style={{ ['--d' as string]: '0.34s' }}
+          style={{ ["--d" as string]: "0.34s" }}
         >
           <span>{cta.label}</span>
         </a>
@@ -111,10 +117,10 @@ export function Header({ nav, cta }: HeaderProps) {
         <button
           type="button"
           className={`burger appear appear--scale ${styles.burger}`}
-          style={{ ['--d' as string]: '0.34s' }}
+          style={{ ["--d" as string]: "0.34s" }}
           aria-controls="site-nav"
           aria-expanded={open}
-          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((v) => !v)}
         >
           <span className={styles.bar} />
@@ -123,5 +129,5 @@ export function Header({ nav, cta }: HeaderProps) {
         </button>
       </header>
     </>
-  )
+  );
 }

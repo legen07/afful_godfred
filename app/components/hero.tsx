@@ -62,6 +62,13 @@ export function Hero() {
               <span>View My Work</span>
             </a>
             <a
+              href="/cv"
+              className="btn btn-frost appear appear--side"
+              style={{ ['--d' as string]: '1.10s' }}
+            >
+              <span>View CV</span>
+            </a>
+            <a
               href="#contact"
               className="btn btn-frost appear appear--side"
               style={{ ['--d' as string]: '1.10s' }}

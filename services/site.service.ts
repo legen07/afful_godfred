@@ -82,6 +82,7 @@ export const site = {
     { label: 'Automations', href: '#automations' },
     { label: 'Skills', href: '#skills' },
     { label: 'About', href: '#about' },
+    { label: 'CV', href: '/cv' },
   ] as NavItem[],
   cta: { label: "Let's Talk", href: '#contact' },
   capabilities: [
