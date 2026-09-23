@@ -54,15 +54,13 @@ export function Automations({ projects, capabilities }: AutomationsProps) {
                   {(() => {
                     const status = project.status
                     if (status === 'public') return null
+                    const label = a.statusLabels?.[status] ?? englishStatusLabels[status] ?? status
                     return (
                       <span className={styles.status}>
-                        {a.statusLabels[status] ?? englishStatusLabels[status] ?? status}
+                        {label}
                       </span>
                     )
                   })()}
-                  {!a.statusLabels[project.status] && project.status !== 'public' && project.language ? (
-                    <span className={styles.status}>{project.language}</span>
-                  ) : null}
                 </div>
                 <p className={styles.desc}>{project.description}</p>
                 <ul className={styles.topics} aria-label="Topics">

@@ -3,6 +3,7 @@ import { Instrument_Serif, Inter } from 'next/font/google'
 import { site } from '@/services/site.service'
 import { AppearSettler } from './components/appear-settler'
 import { LanguageProvider } from '@/lib/language-context'
+import { LanguageSwitcher } from './components/language-switcher'
 import './global.css'
 
 // Fonts (exact faces from the template):
@@ -71,12 +72,13 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${instrumentSerif.variable}`}>
+    <html lang="en" className={`${inter.variable} ${instrumentSerif.variable}`} suppressHydrationWarning>
       {/* Force black immediately (template): the page can never flash white. */}
-      <body style={{ background: '#000', color: '#fff' }}>
+      <body style={{ background: '#000', color: '#fff' }} suppressHydrationWarning>
         {/* Template layer stack: grain sits above everything (z-index 100). */}
         <div className="grain" aria-hidden />
         <LanguageProvider>
+          <LanguageSwitcher />
           {children}
           {/* Settles .appear entrance animations (template JS items 1–2). */}
           <AppearSettler />

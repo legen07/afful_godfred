@@ -9,7 +9,7 @@ export function Footer() {
   return (
     <footer className="footer">
       <span className="footer-left">
-        <LogoMark size={15} />© {new Date().getFullYear()} {f.copyright.replace('{year}', new Date().getFullYear().toString())}
+        <LogoMark size={15} />© {new Date().getFullYear()}
       </span>
       <span className="footer-right">
         {f.location}

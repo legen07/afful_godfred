@@ -47,7 +47,7 @@ function buildJapaneseModel(): Site {
     cta: j.cta,
     hero: { ...site.hero, ...j.hero },
     about: { ...site.about, ...j.about },
-    workText: { ...site.workText, ...j.work },
+    workText: { ...site.workText, ...j.workText },
     skills: { ...site.skills, ...j.skills },
     automations: { ...site.automations, ...j.automations },
     contact: { ...site.contact, ...j.contact },
@@ -57,6 +57,9 @@ function buildJapaneseModel(): Site {
     loading: j.loading,
     notFound: { ...site.notFound, ...j.notFound },
     capabilities: j.capabilities,
+    work: j.workSites,
+    skillsGroups: j.skillsGroups,
+    person: j.person,
   }
 }
 

@@ -27,6 +27,7 @@ const DESKTOP_QUERY = "(min-width: 901px)";
 export function Header({ nav, cta }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { toggleLanguage, isJapanese } = useLanguage();
 
   // Scroll state — rAF-throttled (no work on the input path). The header goes
   // "scrolled" once the first frame has mostly passed (Apple: scroll edge
@@ -68,6 +69,13 @@ export function Header({ nav, cta }: HeaderProps) {
       window.removeEventListener("resize", onResize);
     };
   }, [open]);
+
+  // Reset body scroll lock when language changes (menu may be open).
+  useEffect(() => {
+    if (!open) return;
+    document.body.classList.remove("menu-open");
+    document.body.style.overflow = "";
+  }, [isJapanese]);
 
   return (
     <>
@@ -113,6 +121,16 @@ export function Header({ nav, cta }: HeaderProps) {
         >
           <span>{cta.label}</span>
         </a>
+
+        <button
+          type="button"
+          className={`langToggle appear appear--scale ${styles.langToggle}`}
+          style={{ ["--d" as string]: "0.34s" }}
+          aria-label={isJapanese ? "Switch to English" : "Switch to Japanese"}
+          onClick={() => toggleLanguage()}
+        >
+          {isJapanese ? "EN" : "JA"}
+        </button>
 
         <button
           type="button"

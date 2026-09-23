@@ -39,8 +39,7 @@ export default function NotFound() {
           lineHeight: 1.1,
         }}
       >
-        This page went to{' '}
-        <em style={{ fontFamily: 'var(--font-accent)', color: '#9a9a9a' }}>automate</em> itself.
+        {nf.message}
       </h1>
       <a className="btn btn-solid" style={{ marginTop: 10 }} href="/">
         <span>{nf.backHome}</span>

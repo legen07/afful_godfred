@@ -4,8 +4,10 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  justify-items: center;
   align-items: center;
   padding: var(--header-y) var(--header-x) 10px;
   background: transparent;
@@ -73,7 +75,7 @@
 
 /* --- Language toggle ------------------------------------------------------- */
 .langToggle {
-  display: none;
+  display: grid;
   place-items: center;
   width: 42px;
   height: 42px;
@@ -219,6 +221,29 @@
 }
 
 /* ==========================================================================
+    Desktop (≥901px) — always visible elements
+    ========================================================================== */
+@media (min-width: 901px) {
+  .header {
+    grid-template-columns: 1fr auto auto;
+  }
+
+  .logo,
+  .headerCta,
+  .langToggle {
+    z-index: 80;
+  }
+
+  .burger {
+    display: none;
+  }
+
+  .langToggle {
+    display: grid;
+  }
+}
+
+/* ==========================================================================
    Phone (≤900) — full-screen menu (template, exact)
    ========================================================================== */
 @media (max-width: 900px) {
@@ -314,5 +339,9 @@
   }
   :global(body.menu-open) .navPill:nth-child(4) {
     transition-delay: 0.24s;
+  }
+
+  :global(body.menu-open) .langToggle {
+    transition-delay: 0.30s;
   }
 }

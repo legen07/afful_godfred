@@ -167,10 +167,8 @@ export interface NotFoundData {
 /** Assembled, validated site model — the only object the UI layer sees. */
 export const site = {
   work: workData,
-  automations: automationsData,
   skillsGroups: skillsData,
   person: personData,
-  contact: contactData,
   nav: [
     { label: 'Work', href: '#work' },
     { label: 'Automations', href: '#automations' },
