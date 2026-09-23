@@ -1,13 +1,14 @@
 // next-image-export-optimizer: drop-in replacement for next/image that
 // resolves to build-time-optimized webp files (its CLI re-encodes
 // public/images with sharp after `next build`). See next.config.ts env.
-import ExportedImage from 'next-image-export-optimizer'
-import type { WorkSite } from '@/repository/site.repository'
-import { Reveal } from './reveal'
-import styles from './work.module.css'
+import ExportedImage from "next-image-export-optimizer";
+import type { WorkSite } from "@/repository/site.repository";
+import { Reveal } from "./reveal";
+import styles from "./work.module.css";
+import { useTranslations } from "@/lib/language-context";
 
 interface WorkProps {
-  sites: WorkSite[]
+  sites: WorkSite[];
 }
 
 /**
@@ -17,18 +18,20 @@ interface WorkProps {
  * compositor-only (transform/opacity/filter), per apple-design §11.
  */
 export function Work({ sites }: WorkProps) {
+  const t = useTranslations();
+  const w = t.workText;
+
   return (
     <section id="work" className="section">
       <div className="section-inner">
         <Reveal>
-          <p className="overline">Selected Work</p>
+          <p className="overline">{w.overline}</p>
           <h2 className="section-title">
-            Websites I&apos;ve <em>built</em>.
+            {w.title}
+            <em>{w.titleEm}</em>
+            {w.titleSuffix}
           </h2>
-          <p className="section-lede">
-            Four sites, live today — a liquor store, a product storefront, a photography portfolio,
-            and a beauty studio. All shipped to Cloudflare.
-          </p>
+          <p className="section-lede">{w.lede}</p>
         </Reveal>
 
         <div className={styles.grid}>
@@ -42,7 +45,10 @@ export function Work({ sites }: WorkProps) {
                       alt={`${site.name} — desktop view`}
                       fill
                       sizes="(min-width: 901px) 50vw, 100vw"
-                      style={{ objectFit: 'cover', objectPosition: 'top center' }}
+                      style={{
+                        objectFit: "cover",
+                        objectPosition: "top center",
+                      }}
                       priority={i < 2}
                     />
                   </div>
@@ -52,14 +58,19 @@ export function Work({ sites }: WorkProps) {
                       alt={`${site.name} — mobile view`}
                       fill
                       sizes="96px"
-                      style={{ objectFit: 'cover', objectPosition: 'top center' }}
+                      style={{
+                        objectFit: "cover",
+                        objectPosition: "top center",
+                      }}
                     />
                   </div>
                 </div>
 
                 <div className={styles.meta}>
                   <h3 className={styles.name}>{site.name}</h3>
-                  <span className={styles.url}>{site.url.replace('https://', '')}</span>
+                  <span className={styles.url}>
+                    {site.url.replace("https://", "")}
+                  </span>
                 </div>
                 <p className={styles.desc}>{site.description}</p>
                 <a
@@ -68,7 +79,7 @@ export function Work({ sites }: WorkProps) {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Visit site
+                  {w.visitSite}
                   <svg
                     width="12"
                     height="12"
@@ -89,5 +100,5 @@ export function Work({ sites }: WorkProps) {
         </div>
       </div>
     </section>
-  )
+  );
 }

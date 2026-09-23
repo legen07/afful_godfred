@@ -1,6 +1,7 @@
 import type { Contact as ContactData } from '@/repository/site.repository'
 import styles from './contact.module.css'
 import { Reveal } from './reveal'
+import { useTranslations } from '@/lib/language-context'
 
 interface ContactProps {
   contact: ContactData
@@ -12,17 +13,19 @@ interface ContactProps {
  * secondary: the social liquid pills.
  */
 export function Contact({ contact }: ContactProps) {
+  const t = useTranslations()
+  const c = t.contact
+
   return (
     <section id="contact" className={`section ${styles.section}`}>
       <div className={`section-inner ${styles.inner}`}>
         <Reveal>
-          <p className="overline">Contact</p>
+          <p className="overline">{c.overline}</p>
           <h2 className={`section-title ${styles.title}`}>
-            Let&apos;s build something that <em>runs itself.</em>
+            {c.title}<em>{c.titleEm}</em>{c.titleSuffix}
           </h2>
           <p className={`section-lede ${styles.lede}`}>
-            I&apos;m open to web builds, automation pipelines, and AI integrations — tell me
-            what&apos;s repetitive and I&apos;ll make it disappear.
+            {c.lede}
           </p>
         </Reveal>
 

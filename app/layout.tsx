@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Instrument_Serif, Inter } from 'next/font/google'
 import { site } from '@/services/site.service'
 import { AppearSettler } from './components/appear-settler'
+import { LanguageProvider } from '@/lib/language-context'
 import './global.css'
 
 // Fonts (exact faces from the template):
@@ -75,9 +76,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body style={{ background: '#000', color: '#fff' }}>
         {/* Template layer stack: grain sits above everything (z-index 100). */}
         <div className="grain" aria-hidden />
-        {children}
-        {/* Settles .appear entrance animations (template JS items 1–2). */}
-        <AppearSettler />
+        <LanguageProvider>
+          {children}
+          {/* Settles .appear entrance animations (template JS items 1–2). */}
+          <AppearSettler />
+        </LanguageProvider>
       </body>
     </html>
   )

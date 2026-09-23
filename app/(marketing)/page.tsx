@@ -1,4 +1,6 @@
-import { site } from '@/services/site.service'
+'use client'
+
+import { useTranslations } from '@/lib/language-context'
 import { About } from '../components/about'
 import { Automations } from '../components/automations'
 import { Contact } from '../components/contact'
@@ -20,16 +22,18 @@ import { Work } from '../components/work'
  *     footer
  */
 export default function MarketingPage() {
+  const t = useTranslations()
+
   return (
     <div className="page">
-      <Header nav={site.nav} cta={site.cta} />
+      <Header nav={t.nav} cta={t.cta} />
       <main id="top">
         <Hero />
-        <Work sites={site.work} />
-        <Automations projects={site.automations} capabilities={site.capabilities} />
-        <Skills groups={site.skills} />
-        <About person={site.person} />
-        <Contact contact={site.contact} />
+        <Work sites={t.work} />
+        <Automations projects={t.automations.projects} capabilities={t.capabilities} />
+        <Skills groups={t.skills.groups} />
+        <About person={t.person} />
+        <Contact contact={t.contact} />
       </main>
       <Footer />
     </div>

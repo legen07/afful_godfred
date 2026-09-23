@@ -5,6 +5,7 @@ import { APPLE_EASE, prefersReducedMotion } from '@/lib/animations'
 import type { SkillGroup } from '@/repository/site.repository'
 import { Reveal } from './reveal'
 import styles from './skills.module.css'
+import { useTranslations } from '@/lib/language-context'
 
 interface SkillsProps {
   groups: SkillGroup[]
@@ -18,6 +19,8 @@ interface SkillsProps {
  */
 export function Skills({ groups }: SkillsProps) {
   const gridRef = useRef<HTMLDivElement>(null)
+  const t = useTranslations()
+  const s = t.skills
 
   useEffect(() => {
     const grid = gridRef.current
@@ -69,13 +72,12 @@ export function Skills({ groups }: SkillsProps) {
     <section id="skills" className="section">
       <div className="section-inner">
         <Reveal>
-          <p className="overline">Skills</p>
+          <p className="overline">{s.overline}</p>
           <h2 className="section-title">
-            The <em>toolbox</em>.
+            {s.title}
           </h2>
           <p className="section-lede">
-            Honest self-assessments, from the languages I ship in to the tools I reach for every
-            day.
+            {s.lede}
           </p>
         </Reveal>
 

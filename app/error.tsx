@@ -1,6 +1,7 @@
 'use client'
 
 import { LogoMark } from './components/ui/logo'
+import { useTranslations } from '@/lib/language-context'
 
 export default function GlobalError({
   error,
@@ -9,6 +10,9 @@ export default function GlobalError({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  const t = useTranslations()
+  const e = t.error
+
   return (
     <main
       style={{
@@ -31,7 +35,7 @@ export default function GlobalError({
           color: '#9a9a9a',
         }}
       >
-        Something broke
+        {e.somethingBroke}
       </p>
       <h1
         style={{
@@ -40,13 +44,13 @@ export default function GlobalError({
           letterSpacing: '-0.04em',
         }}
       >
-        An unexpected error occurred.
+        {e.unexpectedError}
       </h1>
       <p style={{ color: '#9a9a9a', fontSize: 14, maxWidth: 420, lineHeight: 1.55 }}>
         {error.digest ? `Error digest: ${error.digest}` : 'Please try again.'}
       </p>
       <button className="btn btn-solid" type="button" style={{ marginTop: 10 }} onClick={reset}>
-        <span>Try again</span>
+        <span>{e.tryAgain}</span>
       </button>
     </main>
   )

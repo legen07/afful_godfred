@@ -23,7 +23,7 @@ export function LogoMark({ size }: { size?: number }) {
 export function LogoWordmark() {
   return (
     <>
-      Godfred<span className="logo-suffix">.dev</span>
+      Godfred
     </>
   )
 }

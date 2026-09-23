@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLanguage } from "@/lib/language-context";
 import styles from "./header.module.css";
 import { LogoMark, LogoWordmark } from "./ui/logo";
 
@@ -80,7 +81,6 @@ export function Header({ nav, cta }: HeaderProps) {
           style={{ ["--d" as string]: "0.08s" }}
           aria-label="Godfred.dev — back to top"
         >
-          <LogoMark />
           <LogoWordmark />
         </a>
 

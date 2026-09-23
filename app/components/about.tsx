@@ -5,6 +5,7 @@ import ExportedImage from 'next-image-export-optimizer'
 import type { Person } from '@/repository/site.repository'
 import styles from './about.module.css'
 import { Reveal } from './reveal'
+import { useTranslations } from '@/lib/language-context'
 
 interface AboutProps {
   person: Person
@@ -12,11 +13,14 @@ interface AboutProps {
 
 /** About — portrait + bio + the three fact cards (education/languages/location). */
 export function About({ person }: AboutProps) {
+  const t = useTranslations()
+  const a = t.about
+
   return (
     <section id="about" className="section">
       <div className="section-inner">
         <Reveal>
-          <p className="overline">About</p>
+          <p className="overline">{a.overline}</p>
         </Reveal>
 
         <div className={styles.grid}>
@@ -27,7 +31,7 @@ export function About({ person }: AboutProps) {
                 alt={`Portrait of ${person.name}`}
                 width={640}
                 height={640}
-                priority
+                // priority
                 className={styles.photoImg}
               />
             </figure>
@@ -37,7 +41,7 @@ export function About({ person }: AboutProps) {
             <h2 className={styles.name}>{person.name}</h2>
             <p className={styles.role}>{person.role}</p>
             <div className={styles.bio}>
-              {person.bio.map((paragraph) => (
+              {a.bio.map((paragraph) => (
                 <p key={paragraph.slice(0, 24)}>{paragraph}</p>
               ))}
             </div>

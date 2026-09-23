@@ -1,4 +1,10 @@
+'use client'
+
+import { useTranslations } from '@/lib/language-context'
+
 export default function Loading() {
+  const t = useTranslations()
+
   return (
     <main
       style={{
@@ -17,7 +23,7 @@ export default function Loading() {
           animation: 'in-soft 1.2s ease infinite alternate',
         }}
       >
-        Loading
+        {t.loading}
       </p>
     </main>
   )

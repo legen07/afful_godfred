@@ -1,6 +1,12 @@
+'use client'
+
 import { LogoMark } from './components/ui/logo'
+import { useTranslations } from '@/lib/language-context'
 
 export default function NotFound() {
+  const t = useTranslations()
+  const nf = t.notFound
+
   return (
     <main
       style={{
@@ -23,7 +29,7 @@ export default function NotFound() {
           color: '#9a9a9a',
         }}
       >
-        404
+        {nf.code}
       </p>
       <h1
         style={{
@@ -37,7 +43,7 @@ export default function NotFound() {
         <em style={{ fontFamily: 'var(--font-accent)', color: '#9a9a9a' }}>automate</em> itself.
       </h1>
       <a className="btn btn-solid" style={{ marginTop: 10 }} href="/">
-        <span>Back home</span>
+        <span>{nf.backHome}</span>
       </a>
     </main>
   )

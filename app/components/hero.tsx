@@ -1,4 +1,5 @@
 import styles from './hero.module.css'
+import { useTranslations } from '@/lib/language-context'
 
 /**
  * Hero — the template's bottom-centered frame, exact:
@@ -9,6 +10,9 @@ import styles from './hero.module.css'
  * frame is the first of several (Apple wayfinding: the page continues below).
  */
 export function Hero() {
+  const t = useTranslations()
+  const h = t.hero
+
   return (
     <section className={styles.heroFrame}>
       <div className={styles.hero}>
@@ -27,7 +31,7 @@ export function Hero() {
             >
               <path d="M12 2.6C12.55 2.6 12.88 3.15 13.08 4.7c.62 4.7 1.52 5.6 6.22 6.22 1.55.2 2.1.53 2.1 1.08s-.55.88-2.1 1.08c-4.7.62-5.6 1.52-6.22 6.22-.2 1.55-.53 2.1-1.08 2.1s-.88-.55-1.08-2.1c-.62-4.7-1.52-5.6-6.22-6.22C3.15 12.88 2.6 12.55 2.6 12s.55-.88 2.1-1.08c4.7-.62 5.6-1.52 6.22-6.22C11.12 3.15 11.45 2.6 12 2.6Z" />
             </svg>
-            Web Development · Automation
+            {h.badge}
           </span>
 
           <h1 className={styles.h1}>
@@ -35,13 +39,7 @@ export function Hero() {
               className={`headline-line appear appear--mask ${styles.line}`}
               style={{ ['--d' as string]: '0.42s' }}
             >
-              I build <em>websites</em> &amp; the
-            </span>
-            <span
-              className={`headline-line appear appear--mask ${styles.line}`}
-              style={{ ['--d' as string]: '0.62s' }}
-            >
-              automations behind them.
+              {h.h1Line1} <em>{h.h1Line2}</em>
             </span>
           </h1>
 
@@ -49,8 +47,7 @@ export function Hero() {
             className={`lede appear appear--soft ${styles.lede}`}
             style={{ ['--d' as string]: '0.82s' }}
           >
-            Software engineer crafting fast, modern websites — and the scrapers, bots, and AI
-            pipelines that run them.
+            {h.lede}
           </p>
 
           <div className={`hero-actions ${styles.actions}`}>
@@ -59,21 +56,21 @@ export function Hero() {
               className="btn btn-solid appear appear--btn"
               style={{ ['--d' as string]: '0.96s' }}
             >
-              <span>View My Work</span>
+              <span>{h.viewWork}</span>
             </a>
             <a
               href="/cv"
               className="btn btn-frost appear appear--side"
               style={{ ['--d' as string]: '1.10s' }}
             >
-              <span>View CV</span>
+              <span>{h.viewCv}</span>
             </a>
             <a
               href="#contact"
               className="btn btn-frost appear appear--side"
               style={{ ['--d' as string]: '1.10s' }}
             >
-              <span>Get in Touch</span>
+              <span>{h.contact}</span>
             </a>
           </div>
         </div>
@@ -85,6 +82,9 @@ export function Hero() {
 
 /** Stats footer — template icons & layout, labels for this portfolio. */
 function Stats() {
+  const t = useTranslations()
+  const h = t.hero.stats
+
   return (
     <footer className={`stats ${styles.stats}`}>
       <div
@@ -107,7 +107,7 @@ function Stats() {
           <rect x="13.4" y="2.6" width="7.2" height="18.8" rx="3.6" fill="url(#stat-pill-b)" />
           <rect x="9.2" y="10.9" width="5.6" height="2.2" rx="1.1" fill="#4a4a4a" />
         </svg>
-        <span>6 automations published</span>
+        <span>{h.automations}</span>
       </div>
 
       <div
@@ -133,7 +133,7 @@ function Stats() {
             fill="none"
           />
         </svg>
-        <span>4 websites live</span>
+        <span>{h.websites}</span>
       </div>
 
       <div
@@ -157,7 +157,7 @@ function Stats() {
           <path d="M21.2 9.2v5.4" />
           <circle cx="21.2" cy="15.9" r="0.9" fill="#e8e8e8" stroke="none" />
         </svg>
-        <span>B.Tech CS · Class of 2024</span>
+        <span>{h.degree}</span>
       </div>
     </footer>
   )
