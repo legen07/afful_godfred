@@ -6,6 +6,8 @@ node_modules/
 out/
 next-env.d.ts
 
+bun.lock
+
 # cloudflare / opennext
 dist/
 .open-next/
