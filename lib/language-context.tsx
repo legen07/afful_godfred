@@ -16,11 +16,34 @@ interface LanguageContextValue {
 
 const LanguageContext = createContext<LanguageContextValue | null>(null)
 
+const STORAGE_KEY = 'site-lang'
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>('en')
+  const [language, setLanguageState] = useState<Language>(() => {
+    if (typeof window !== 'undefined') {
+      const stored = window.localStorage.getItem(STORAGE_KEY)
+      if (stored === 'ja' || stored === 'en') {
+        return stored
+      }
+    }
+    return 'en'
+  })
+
+  const setLanguage = useCallback((lang: Language) => {
+    setLanguageState(lang)
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(STORAGE_KEY, lang)
+    }
+  }, [])
 
   const toggleLanguage = useCallback(() => {
-    setLanguage((prev) => (prev === 'en' ? 'ja' : 'en'))
+    setLanguageState((prev) => {
+      const next = prev === 'en' ? 'ja' : 'en'
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem(STORAGE_KEY, next)
+      }
+      return next
+    })
   }, [])
 
   return (

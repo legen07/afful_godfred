@@ -114,37 +114,39 @@ export function Header({ nav, cta }: HeaderProps) {
           })}
         </nav>
 
-        <a
-          href={cta.href}
-          className={`btn btn-solid appear appear--scale ${styles.headerCta}`}
-          style={{ ["--d" as string]: "0.34s" }}
-        >
-          <span>{cta.label}</span>
-        </a>
+        <div className={styles.rightHeader}>
+          <a
+            href={cta.href}
+            className={`btn btn-solid appear appear--scale ${styles.headerCta}`}
+            style={{ ["--d" as string]: "0.34s" }}
+          >
+            <span>{cta.label}</span>
+          </a>
 
-        <button
-          type="button"
-          className={`langToggle appear appear--scale ${styles.langToggle}`}
-          style={{ ["--d" as string]: "0.34s" }}
-          aria-label={isJapanese ? "Switch to English" : "Switch to Japanese"}
-          onClick={() => toggleLanguage()}
-        >
-          {isJapanese ? "EN" : "JA"}
-        </button>
+          <button
+            type="button"
+            className={`langToggle appear appear--scale ${styles.langToggle}`}
+            style={{ ["--d" as string]: "0.34s" }}
+            aria-label={isJapanese ? "Switch to English" : "Switch to Japanese"}
+            onClick={() => toggleLanguage()}
+          >
+            {isJapanese ? "EN" : "JA"}
+          </button>
 
-        <button
-          type="button"
-          className={`burger appear appear--scale ${styles.burger}`}
-          style={{ ["--d" as string]: "0.34s" }}
-          aria-controls="site-nav"
-          aria-expanded={open}
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span className={styles.bar} />
-          <span className={styles.bar} />
-          <span className={styles.bar} />
-        </button>
+          <button
+            type="button"
+            className={`burger appear appear--scale ${styles.burger}`}
+            style={{ ["--d" as string]: "0.34s" }}
+            aria-controls="site-nav"
+            aria-expanded={open}
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span className={styles.bar} />
+            <span className={styles.bar} />
+            <span className={styles.bar} />
+          </button>
+        </div>
       </header>
     </>
   );

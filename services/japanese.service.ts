@@ -78,7 +78,7 @@ export const japaneseSite = {
       name: "Rene's Glow Luxe",
       url: 'https://reneglow.pages.dev',
       description:
-        'Taifaの美容スタジオサイト — 髪、ネイル、アイラッシュ。サービス、営業時間、グランドオープンオffer。',
+        'Taifaの美容スタジオサイト — 髪、ネイル、アイラッシュ。サービス、営業時間、グランドオープンオファー。',
       desktop: '/images/work/reneglow-desktop.png',
       mobile: '/images/work/reneglow-mobile.png',
     },
@@ -212,7 +212,7 @@ export const japaneseSite = {
         name: 'sporty_bro',
         url: 'https://github.com/legen07/sporty_bro',
         description:
-          'Playwrightベースの自動化されたSportyBetオッズスクレイパーと分析ツール。110以上の賭け（9ゲームずつ）で賭博が時間とお金の無の無駄であることを証明した実験。',
+          'Playwrightベースの自動化されたSportyBetオッズスクレイパーと分析ツール。110以上の賭け（9ゲームずつ）で賭博が時間とお金の無駄であることを証明した実験。',
         language: 'JavaScript',
         topics: ['playwright', 'scraping', 'analysis'],
         status: 'public' as const,
@@ -283,7 +283,7 @@ export const japaneseSite = {
     role: 'ソフトウェアエンジニア — ウェブ開発と自動化',
     photo: '/images/afful-godfred.jpg',
     bio: [
-      'アクラ工科大学（B.Tech、2024年卒業）卒業の結果志向のソフトウェアエンジニア。人や企業のためにウェブサイトを構築し、スクレイピング、メッセージング、SNS、カスタマーサポートの繰り返し作業を自動化し、AIを適切な場所に組み_intoしています。',
+      'アクラ工科大学（B.Tech、2024年卒業）卒業の結果志向のソフトウェアエンジニア。人や企業のためにウェブサイトを構築し、スクレイピング、メッセージング、SNS、カスタマーサポートの繰り返し作業を自動化し、AIを適切な場所に組み込んでいます。',
       '多くの自動化を作成してきました。個人的なものもあれば、重要な場面のためのものもあり、まだ構築中のものもあります。',
     ],
     facts: [

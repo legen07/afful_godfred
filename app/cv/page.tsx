@@ -2,6 +2,7 @@
 
 import { useTranslations } from '@/lib/language-context'
 import { Footer } from '../components/footer'
+import { LanguageToggle } from '../components/language-toggle'
 import styles from './cv.module.css'
 
 export default function CvPage() {
@@ -11,6 +12,11 @@ export default function CvPage() {
 
   return (
     <div className="page">
+
+      {/* Language toggle (light variant for the paper theme) */}
+      <div className={styles.langToggleWrap}>
+        <LanguageToggle variant="light" />
+      </div>
 
       <main id="top">
         {/* Hero / letterhead */}
@@ -122,8 +128,12 @@ export default function CvPage() {
                       </a>{' '}
                       — {a.description}
                       {a.language && <span className={styles.lang}> ({a.language})</span>}
-                      {a.status === 'wip' && <span className={styles.statusTag}> · WIP</span>}
-                      {a.status === 'private' && <span className={styles.statusTag}> · Private</span>}
+                      {a.status === 'wip' && (
+                        <span className={styles.statusTag}> · {t.automations.statusLabels.wip}</span>
+                      )}
+                      {a.status === 'private' && (
+                        <span className={styles.statusTag}> · {t.automations.statusLabels.private}</span>
+                      )}
                     </li>
                   ))}
                 </ul>

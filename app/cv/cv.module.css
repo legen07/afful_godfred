@@ -1,5 +1,13 @@
 /* CV page — document / letter paper */
 
+/* Language toggle — fixed top-right, above the paper sheet */
+.langToggleWrap {
+  position: fixed;
+  top: max(1rem, env(safe-area-inset-top));
+  right: max(1rem, env(safe-area-inset-right));
+  z-index: 100;
+}
+
 :global(.page) {
   background: #f5f3ed;
   color: #1a1a1a;
