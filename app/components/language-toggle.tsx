@@ -23,7 +23,7 @@ export function LanguageToggle({ variant = 'dark' }: LanguageToggleProps) {
         aria-label={isJapanese ? 'Switch to English' : 'Switch to Japanese'}
         onClick={() => toggleLanguage()}
       >
-        {isJapanese ? 'EN' : 'JA'}
+        {isJapanese ? 'EN' : '日本'}
       </button>
     )
   }
@@ -35,7 +35,7 @@ export function LanguageToggle({ variant = 'dark' }: LanguageToggleProps) {
       aria-label={isJapanese ? 'Switch to English' : 'Switch to Japanese'}
       onClick={() => toggleLanguage()}
     >
-      {isJapanese ? 'EN' : 'JA'}
+      {isJapanese ? 'EN' : '日本'}
     </button>
   )
 }

@@ -130,7 +130,7 @@ export function Header({ nav, cta }: HeaderProps) {
             aria-label={isJapanese ? "Switch to English" : "Switch to Japanese"}
             onClick={() => toggleLanguage()}
           >
-            {isJapanese ? "EN" : "JA"}
+            {isJapanese ? "EN" : "日本"}
           </button>
 
           <button
