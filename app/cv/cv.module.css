@@ -8,7 +8,10 @@
   z-index: 100;
 }
 
-:global(.page) {
+/* Scoped to this page only. A bare :global(.page) would leak the paper theme
+   onto the marketing page, which also renders a .page wrapper — the shared
+   production CSS bundle applies it to both routes. */
+.cvPage {
   background: #f5f3ed;
   color: #1a1a1a;
 }

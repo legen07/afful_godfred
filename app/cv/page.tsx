@@ -11,7 +11,7 @@ export default function CvPage() {
   const wt = t.workText
 
   return (
-    <div className="page">
+    <div className={`page ${styles.cvPage}`}>
 
       {/* Language toggle (light variant for the paper theme) */}
       <div className={styles.langToggleWrap}>
