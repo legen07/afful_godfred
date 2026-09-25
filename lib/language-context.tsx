@@ -18,6 +18,15 @@ const LanguageContext = createContext<LanguageContextValue | null>(null)
 
 const STORAGE_KEY = 'site-lang'
 
+function detectBrowserLanguage(): Language {
+  if (typeof window === 'undefined') return 'en'
+  const langs = window.navigator.languages ?? [window.navigator.language ?? '']
+  const browserLang = langs[0] ?? ''
+  const code = browserLang.toLowerCase()
+  if (code.startsWith('zh') || code.startsWith('ja')) return 'ja'
+  return 'en'
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(() => {
     if (typeof window !== 'undefined') {
@@ -26,7 +35,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         return stored
       }
     }
-    return 'en'
+    return detectBrowserLanguage()
   })
 
   const setLanguage = useCallback((lang: Language) => {
